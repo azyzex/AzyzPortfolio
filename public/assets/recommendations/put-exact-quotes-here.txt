@@ -1,0 +1,10 @@
+Recommendation source text has been split into one folder per recommender.
+
+Use these folders:
+- anis-dakhloui/recommendation.txt
+- mohamed-aziz-hadj-hassen/recommendation.txt
+- youssef-bouzid/recommendation.txt
+- mohamed-ali-hamroun/recommendation.txt
+- mohamed-amine-guitouni/recommendation.txt
+
+Add each person's profile image inside their folder.

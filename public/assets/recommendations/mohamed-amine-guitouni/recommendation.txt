@@ -1,0 +1,11 @@
+Name: Mohamed Amine Guitouni
+Role/context: Student at Higher Institute of Computer Science Mahdia
+Date: Aug 29, 2025
+Source: LinkedIn recommendation
+Link: https://www.linkedin.com/in/mohamed-aziz-guenni/details/recommendations/?detailScreenTabIndex=0
+
+Recommendation:
+An exceptional project partner passionate, reliable, and highly skilled at problem-solving. They stay composed under pressure, handle stress with professionalism, and consistently bring creative solutions to the table. Truly a pleasure to work with and an asset to any team.
+
+Profile image:
+Add this person's profile image in this same folder.

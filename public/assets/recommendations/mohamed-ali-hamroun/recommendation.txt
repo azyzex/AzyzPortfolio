@@ -1,0 +1,11 @@
+Name: mohamed ali hamroun
+Role/context: Software Engineer | Computer Science
+Date: Aug 30, 2025
+Source: LinkedIn recommendation
+Link: https://www.linkedin.com/in/mohamed-aziz-guenni/details/recommendations/?detailScreenTabIndex=0
+
+Recommendation:
+I've known Mohamed Aziz Guenni since our college days, and what always stood out is his strong technical skills and dedication to his work. He's the kind of person who approaches problems with persistence and creativity, always making sure to deliver solid results. His professionalism and commitment are qualities I truly admire.
+
+Profile image:
+Add this person's profile image in this same folder.
