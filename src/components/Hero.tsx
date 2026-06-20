@@ -24,13 +24,7 @@ export function Hero() {
 
       <motion.div className="hero-copy" variants={staggerContainer}>
         <motion.h1 id="hero-title" variants={fadeUp}>
-          Hi, I'm{" "}
-          <span className="hero-photo-word">
-            {profile.photo ? (
-              <img src={assetPath(profile.photo)} alt={profile.name} />
-            ) : null}
-          </span>{" "}
-          Aziz.
+          Hi, I'm Aziz.
         </motion.h1>
         <motion.p className="hero-role" variants={fadeUp}>
           {profile.title}

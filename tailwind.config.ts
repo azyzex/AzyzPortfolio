@@ -1,17 +1,15 @@
 import type { Config } from "tailwindcss";
 
+// Tailwind is intentionally minimal here: the site is styled by hand-written CSS
+// in src/styles.css, not utility classes. Tailwind is kept for its base reset
+// (preflight) — the layout depends on it (e.g. zeroed paragraph margins) — and
+// stays available if utility classes are ever needed. The previous `theme`
+// color tokens were unused and did not match the real palette, so they were
+// removed to avoid implying a design system that isn't wired up.
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
-      colors: {
-        ink: "#18201d",
-        muted: "#5f6f68",
-        line: "#dfe8e3",
-        accent: "#1f8a70",
-        accentSoft: "#e8f5f1",
-        skySoft: "#eaf4fb",
-      },
       fontFamily: {
         sans: [
           "Inter",

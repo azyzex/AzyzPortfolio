@@ -110,7 +110,7 @@ export function Proof() {
   const recommendationMotion = {
     x: ["-50%", "0%"],
   };
-  const certificateTravelPx = 260;
+  const certificateTravelPx = 335;
   const recommendationTravelPx = 440;
   const proofCarouselSpeedPx = 62;
   const sharedSpeedTransition = {

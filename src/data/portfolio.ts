@@ -17,6 +17,7 @@ import {
   Mic2,
   MonitorSmartphone,
   Phone,
+  Printer,
   RadioTower,
   ShieldCheck,
   Smartphone,
@@ -93,12 +94,13 @@ export const profile = {
   photo: "assets/profile/1770583574950.jfif",
 };
 
+// Primary header navigation. This is the single source of truth — Header.tsx
+// imports it rather than keeping its own copy.
 export const navItems = [
-  { label: "Home", href: "#top" },
+  { label: "Work", href: "#projects" },
   { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Certificates", href: "#certificates" },
+  { label: "Proof", href: "#certificates" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -257,7 +259,137 @@ export const skillGroups = [
   },
 ];
 
+// Tech stack shown in the Skills marquee. Lives here (not in the component) so
+// portfolio.ts stays the single source of truth for site content. `icon` URLs
+// come from the devicon CDN; items without an `icon` fall back to the `logo`
+// text glyph. `accent` drives the per-item hover color (--accent in CSS).
+export type TechItem = {
+  accent: string;
+  icon?: string;
+  logo: string;
+  name: string;
+};
+
+const devicon = (name: string, variant = "original") =>
+  `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${name}/${name}-${variant}.svg`;
+
+export const techItems: TechItem[] = [
+  { name: "C", logo: "C", icon: devicon("c"), accent: "#00599c" },
+  { name: "HTML5", logo: "H5", icon: devicon("html5"), accent: "#e34f26" },
+  { name: "CSS3", logo: "C3", icon: devicon("css3"), accent: "#1572b6" },
+  { name: "JavaScript", logo: "JS", icon: devicon("javascript"), accent: "#caa70a" },
+  { name: "TypeScript", logo: "TS", icon: devicon("typescript"), accent: "#3178c6" },
+  { name: "Python", logo: "Py", icon: devicon("python"), accent: "#3776ab" },
+  { name: "Java", logo: "Ja", icon: devicon("java"), accent: "#f89820" },
+  { name: "PHP", logo: "PHP", icon: devicon("php"), accent: "#777bb4" },
+  { name: "Dart", logo: "D", icon: devicon("dart"), accent: "#0175c2" },
+  { name: "Bash", logo: "Sh", icon: devicon("linux"), accent: "#15191d" },
+  { name: "React", logo: "R", icon: devicon("react"), accent: "#149eca" },
+  { name: "Next.js", logo: "N", icon: devicon("nextjs"), accent: "#15191d" },
+  { name: "Vue.js", logo: "Vue", icon: devicon("vuejs"), accent: "#42b883" },
+  { name: "React Native", logo: "RN", icon: devicon("react"), accent: "#149eca" },
+  { name: "Expo", logo: "E", icon: devicon("expo"), accent: "#15191d" },
+  { name: "React Router", logo: "RR", icon: devicon("reactrouter"), accent: "#ca4245" },
+  { name: "React Query", logo: "RQ", accent: "#ff4154" },
+  { name: "Redux", logo: "Rx", icon: devicon("redux"), accent: "#764abc" },
+  { name: "Framer Motion", logo: "FM", accent: "#6f4cff" },
+  { name: "Material UI", logo: "MUI", icon: devicon("materialui"), accent: "#007fff" },
+  { name: "Chakra UI", logo: "Ch", accent: "#38b2ac" },
+  { name: "Tailwind CSS", logo: "TW", icon: devicon("tailwindcss"), accent: "#06b6d4" },
+  { name: "Bootstrap", logo: "B", icon: devicon("bootstrap"), accent: "#7952b3" },
+  { name: "Vite", logo: "V", icon: devicon("vitejs"), accent: "#8b5cf6" },
+  { name: "Node.js", logo: "N", icon: devicon("nodejs"), accent: "#3c873a" },
+  { name: "Express.js", logo: "EX", icon: devicon("express"), accent: "#15191d" },
+  { name: "FastAPI", logo: "FA", icon: devicon("fastapi"), accent: "#009688" },
+  { name: "Flask", logo: "Fl", icon: devicon("flask"), accent: "#15191d" },
+  { name: "Tkinter", logo: "Tk", accent: "#3776ab" },
+  { name: "Socket.IO", logo: "IO", icon: devicon("socketio"), accent: "#15191d" },
+  { name: "Flutter", logo: "F", icon: devicon("flutter"), accent: "#02569b" },
+  { name: "Firebase", logo: "Fb", icon: devicon("firebase"), accent: "#f5820d" },
+  { name: "Supabase", logo: "Sb", icon: devicon("supabase"), accent: "#3ecf8e" },
+  { name: "MongoDB", logo: "M", icon: devicon("mongodb"), accent: "#47a248" },
+  { name: "MySQL", logo: "SQL", icon: devicon("mysql"), accent: "#00758f" },
+  { name: "PostgreSQL", logo: "PG", icon: devicon("postgresql"), accent: "#336791" },
+  { name: "SQL", logo: "SQL", accent: "#057584" },
+  { name: "Oracle", logo: "Ora", icon: devicon("oracle"), accent: "#f80000" },
+  { name: "Pandas", logo: "Pd", icon: devicon("pandas"), accent: "#150458" },
+  { name: "NumPy", logo: "NP", icon: devicon("numpy"), accent: "#4dabcf" },
+  { name: "Jupyter", logo: "Jp", icon: devicon("jupyter"), accent: "#f37626" },
+  { name: "Google Colab", logo: "Colab", accent: "#f9ab00" },
+  { name: "Gemini API", logo: "AI", icon: devicon("googlecloud"), accent: "#8b5cf6" },
+  { name: "OpenAI", logo: "AI", accent: "#15191d" },
+  { name: "Ollama", logo: "Ol", accent: "#15191d" },
+  { name: "Hugging Face", logo: "HF", accent: "#f4b400" },
+  { name: "Google Maps API", logo: "Map", accent: "#0f9d58" },
+  { name: "Web3.js", logo: "W3", accent: "#f16822" },
+  { name: "Docker", logo: "Dk", icon: devicon("docker"), accent: "#2496ed" },
+  { name: "Git", logo: "Git", icon: devicon("git"), accent: "#f05032" },
+  { name: "GitLab", logo: "GL", icon: devicon("gitlab"), accent: "#fc6d26" },
+  { name: "GitHub CLI", logo: "GH", icon: devicon("github"), accent: "#15191d" },
+  { name: "CI/CD", logo: "CI", accent: "#0699a8" },
+  { name: "Vercel", logo: "V", icon: devicon("vercel"), accent: "#15191d" },
+  { name: "Cloudflare", logo: "CF", icon: devicon("cloudflare"), accent: "#f38020" },
+  { name: "Cloud", logo: "Cloud", icon: devicon("googlecloud"), accent: "#4285f4" },
+  { name: "Apache", logo: "Ap", icon: devicon("apache"), accent: "#d22128" },
+  { name: "Virtualization", logo: "VM", accent: "#66737b" },
+  { name: "Windows Terminal", logo: "WT", icon: devicon("windows11"), accent: "#0078d4" },
+  { name: "Active Directory", logo: "AD", accent: "#0078d4" },
+  { name: "VS Code", logo: "VS", icon: devicon("vscode"), accent: "#007acc" },
+  { name: "npm", logo: "npm", icon: devicon("npm", "original-wordmark"), accent: "#cb3837" },
+  { name: "Postman", logo: "Pm", icon: devicon("postman"), accent: "#ff6c37" },
+  { name: "Jira", logo: "Ji", icon: devicon("jira"), accent: "#0052cc" },
+  { name: "SCRUM", logo: "Sc", accent: "#0699a8" },
+  { name: "Kanban", logo: "Kb", accent: "#f3bd55" },
+  { name: "ClickUp", logo: "Cu", accent: "#7b68ee" },
+  { name: "Notion", logo: "No", icon: devicon("notion"), accent: "#15191d" },
+  { name: "Canva", logo: "Ca", accent: "#00c4cc" },
+  { name: "Figma", logo: "Fg", icon: devicon("figma"), accent: "#f24e1e" },
+  { name: "Android Studio", logo: "AS", icon: devicon("androidstudio"), accent: "#3ddc84" },
+  { name: "Microsoft Teams", logo: "MT", accent: "#6264a7" },
+  { name: "Cisco", logo: "Ci", accent: "#1ba0d7" },
+  { name: "Raspberry Pi", logo: "RP", icon: devicon("raspberrypi"), accent: "#c51a4a" },
+  { name: "Microcontrollers", logo: "MCU", accent: "#057584" },
+  { name: "Zigbee", logo: "Zb", accent: "#eb0443" },
+  { name: "LaTeX", logo: "TeX", icon: devicon("latex"), accent: "#008080" },
+  { name: "SEO", logo: "SEO", accent: "#0699a8" },
+  { name: "Adobe", logo: "Ad", accent: "#ff0000" },
+];
+
 export const projects: Project[] = [
+  {
+    slug: "printedfeeling",
+    title: "Printed Feeling",
+    date: "2026 - Present",
+    category: "Full-stack web · live product",
+    summary:
+      "A live, trilingual photo-printing platform where customers order prints and MDF frames; each order flows straight into Google Drive and a pre-filled WhatsApp hand-off. Deployed on Cloudflare Workers at printedfeeling.com.",
+    details:
+      "Printed Feeling is a production website for a Tunisian photo-printing business. Customers share a cloud link or upload photos directly, choose sizes and quantities with live tiered pricing, and submit; every order is saved into a per-order Google Drive folder and handed off to the business over WhatsApp. It runs as a single server-rendered Cloudflare Worker with anti-abuse protection and full English / French / Arabic (RTL) support.",
+    role:
+      "Designed, built, and deployed the full product end-to-end: the SSR frontend, the Google Drive upload pipeline, a tiered pricing engine, trilingual i18n, security hardening, and the Cloudflare deployment with custom domains and CI.",
+    tech: [
+      "TanStack Start",
+      "React",
+      "TypeScript",
+      "Cloudflare Workers",
+      "Tailwind CSS",
+      "Google Drive API",
+      "Turnstile",
+      "i18n (EN/FR/AR)",
+    ],
+    links: [
+      { label: "Live", href: "https://printedfeeling.com", status: "available" },
+      {
+        label: "Instagram",
+        href: "https://www.instagram.com/printed_feeling1/",
+        status: "available",
+      },
+    ],
+    featured: true,
+    image: "assets/projects/printedfeeling/printedfeeling-hero.webp",
+    icon: Printer,
+    assetHint: "public/assets/projects/printedfeeling/",
+  },
   {
     slug: "promptprotect",
     title: "PromptProtect",
@@ -272,9 +404,14 @@ export const projects: Project[] = [
     tech: ["TypeScript", "Chrome Extension", "Local Detection", "AI Safety"],
     links: [
       { label: "GitHub", href: "https://github.com/azyzex/PromptProtect" },
-      { label: "Live", status: "coming-soon" },
+      {
+        label: "Write-up",
+        href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_security-appsec-llm-share-7457141997162778624-_tu7/",
+        status: "available",
+      },
     ],
     featured: true,
+    image: "assets/projects/promptprotect/promptprotect-hero.webp",
     icon: ShieldCheck,
     assetHint: "public/assets/projects/promptprotect/",
   },
@@ -286,7 +423,7 @@ export const projects: Project[] = [
     summary:
       "A real-time queue management platform with mobile apps, an admin dashboard, backend APIs, and hardware console integration.",
     details:
-      "Qnow helps users and agencies manage waiting lines through remote booking, queue tracking, service management, authentication, maps, multilingual support, themes, and real-time synchronization.",
+      "Qnow helps users and agencies manage waiting lines through remote booking, queue tracking, service management, authentication, maps, multilingual support, themes, and real-time synchronization. It is a private, internal product built for Digika.Tn, so the source code and live app are not publicly available.",
     role:
       "Worked across web, mobile, backend, real-time communication, authentication, and integration logic during the Digika.Tn internship and graduation project.",
     tech: [
@@ -302,10 +439,10 @@ export const projects: Project[] = [
       "ESP32",
     ],
     links: [
-      { label: "Case Study", status: "coming-soon" },
-      { label: "GitHub", status: "coming-soon" },
+      { label: "Digika.Tn", href: "https://www.digika.tn", status: "available" },
     ],
     featured: true,
+    image: "assets/projects/qnow/qnow-hero.webp",
     icon: MonitorSmartphone,
     assetHint: "public/assets/projects/qnow/",
   },
@@ -331,10 +468,15 @@ export const projects: Project[] = [
       "Math Rendering",
     ],
     links: [
-      { label: "Live", status: "coming-soon" },
-      { label: "GitHub", status: "coming-soon" },
+      { label: "Live", href: "https://tunia.pages.dev", status: "available" },
+      {
+        label: "Write-up",
+        href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_newproject-ugcPost-7423397660776296448-Swzx/",
+        status: "available",
+      },
     ],
     featured: true,
+    image: "assets/projects/tuniai/tuniai-hero.webp",
     icon: Bot,
     assetHint: "public/assets/projects/tuniai/",
   },
@@ -354,7 +496,6 @@ export const projects: Project[] = [
       { label: "Case Study", status: "coming-soon" },
       { label: "Live", status: "coming-soon" },
     ],
-    featured: true,
     icon: Smartphone,
     assetHint: "public/assets/projects/megatel/",
   },

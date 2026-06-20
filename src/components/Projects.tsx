@@ -1,4 +1,4 @@
-import { ArrowUpRight, ImagePlus } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { projects, socialLinks, type LinkItem, type Project } from "../data/portfolio";
 import { assetPath } from "../utils/assets";
@@ -83,7 +83,7 @@ export function Projects() {
         <SectionHeader
           id="projects-title"
           title="Selected work, shaped like product stories."
-          description="Large media moments first. When screenshots are missing, the page stays honest and shows exactly where to add them."
+          description="A few selected products, shown large and up close — the work I'm most proud of."
         />
         {github?.href ? (
           <motion.a
@@ -104,11 +104,6 @@ export function Projects() {
         {featured.map((project, index) => (
           <WorkPiece key={project.slug} project={project} index={index} />
         ))}
-      </motion.div>
-
-      <motion.div className="project-asset-note" variants={fadeUp}>
-        <ImagePlus size={17} aria-hidden="true" />
-        Add real project screenshots in each project folder to replace the artboards.
       </motion.div>
     </motion.section>
   );

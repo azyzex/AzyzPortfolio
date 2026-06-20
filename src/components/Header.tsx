@@ -1,17 +1,9 @@
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { cvDownloads, profile } from "../data/portfolio";
+import { cvDownloads, navItems, profile } from "../data/portfolio";
 import { assetPath } from "../utils/assets";
 import { spring } from "../utils/motion";
-
-const navItems = [
-  { label: "Work", href: "#projects" },
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Proof", href: "#certificates" },
-  { label: "Contact", href: "#contact" },
-];
 
 export function Header() {
   const [open, setOpen] = useState(false);
