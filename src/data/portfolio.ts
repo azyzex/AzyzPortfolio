@@ -964,6 +964,15 @@ export const recommendations: Recommendation[] = [
     image: "assets/recommendations/mohamed-amine-guitouni/1750465418662.png",
     profileUrl: linkedInRecommendationsUrl,
   },
+  {
+    name: "Bedis Ben Said",
+    role: "Big Data Engineer",
+    quote:
+      "I had the pleasure of collaborating with Aziz on several projects, where I had the opportunity to appreciate his strong technical skills, dedication, and problem-solving mindset. Aziz consistently demonstrates a great ability to analyze challenges, learn quickly, and find effective solutions. He brings creativity, professionalism, and a positive attitude to every collaboration. Beyond his technical abilities, Aziz is a reliable and proactive teammate who communicates clearly and contributes valuable ideas during discussions and project development. His commitment and willingness to improve make him a great professional to work with. I highly recommend Aziz to anyone looking for a skilled, motivated, and dependable collaborator. I look forward to seeing his future achievements and hopefully working together again.",
+    source: "LinkedIn",
+    image: "assets/recommendations/bedis-bensaid/487511787_2970070899821836_3794993042439798400_n.jpg",
+    profileUrl: linkedInRecommendationsUrl,
+  },
 ];
 
 export const socialLinks: (LinkItem & { icon: LucideIcon })[] = [
