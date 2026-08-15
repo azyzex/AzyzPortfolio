@@ -1,13 +1,15 @@
 import {
   Award,
+  BellRing,
   BookOpen,
   Bot,
   BriefcaseBusiness,
+  CalendarDays,
   Code2,
   Database,
   FileText,
+  Gamepad2,
   Github,
-  Globe2,
   GraduationCap,
   HeartPulse,
   Linkedin,
@@ -17,6 +19,7 @@ import {
   Mic2,
   MonitorSmartphone,
   Phone,
+  Presentation,
   Printer,
   RadioTower,
   ShieldCheck,
@@ -357,6 +360,113 @@ export const techItems: TechItem[] = [
 
 export const projects: Project[] = [
   {
+    slug: "earshot",
+    title: "Earshot",
+    date: "Jul 2026 - Aug 2026",
+    category: "Developer tooling · cross-platform",
+    summary:
+      "A cross-platform alerting system that tells you when your AI coding assistant needs you — across the terminal, the browser, and your phone.",
+    details:
+      "Earshot solves a small problem that costs real time: you hand a long task to an AI assistant, switch away, and lose ten minutes because nothing told you it finished, stopped to ask a question, or ran out of quota. It covers three surfaces from one system — the Claude Code terminal, the browser, and your phone — sharing one configuration, one mute, one set of quiet hours, and one log. The browser extension holds four narrow permissions and one host permission, and CI fails the build if broad host access ever appears, so the boundary cannot erode quietly. The local bridge uses native messaging rather than a local server, so no port is opened and nothing is left listening.",
+    role:
+      "Designed and built the whole system: Claude Code lifecycle hooks, a Tauri desktop app in Rust, a Chrome extension, a Python native-messaging bridge, the sound-generation pipeline, and 9 CI jobs running 319 tests across Ubuntu, Windows, and macOS on every push.",
+    tech: [
+      "Rust",
+      "Tauri",
+      "PowerShell",
+      "Bash",
+      "JavaScript",
+      "Python",
+      "Chrome Extension",
+      "GitHub Actions",
+    ],
+    links: [
+      {
+        label: "GitHub",
+        href: "https://github.com/azyzex/ClaudeCodeSounds",
+        status: "available",
+      },
+    ],
+    image: "assets/projects/earshot/earshot-hero.webp",
+    icon: BellRing,
+    assetHint: "public/assets/projects/earshot/",
+  },
+  {
+    slug: "the-roof",
+    title: "The Roof",
+    date: "Jun 2026 - Aug 2026",
+    category: "Real-time multiplayer game",
+    summary:
+      "A guess-the-image party game for a table of two to six players, in the format of The Floor — every player gets their own clock and answers out loud while the host judges.",
+    details:
+      "The Roof runs four synchronised screens that are deliberately unequal: the host's control screen sees the answer and every control, the board sits face-up on the table showing the image and all clocks but never the answer, each player's phone is a status screen with no buttons at all, and a read-only view can be cast to a TV. Because a player's phone is not a buzzer, a player dropping off doesn't stop the game — while the host or the board disconnecting does. Rooms are joined with a four-letter code or a QR.",
+    role:
+      "Built the real-time architecture end to end: the Socket.IO event contract between server and client, the four role-based screens, per-player clocks, room lifecycle, and reconnection behaviour.",
+    tech: ["React", "React Router", "Socket.IO", "Express", "Node.js", "QR join"],
+    links: [
+      {
+        label: "GitHub",
+        href: "https://github.com/Bedis75/buzzer-quiz",
+        status: "available",
+      },
+      { label: "Demo", status: "coming-soon" },
+    ],
+    image: "assets/projects/the-roof/the-roof-hero.webp",
+    icon: Gamepad2,
+    assetHint: "public/assets/projects/the-roof/",
+  },
+  {
+    slug: "pitchup",
+    title: "PitchUp",
+    date: "Jul 2025",
+    category: "Next.js / event platform",
+    summary:
+      "A French-language platform for a public-speaking and pitch-coaching programme, with event pages and a working contact pipeline.",
+    details:
+      "PitchUp presents a coaching offer built around communication and presentation skills — why communication matters, how to improve the way you present, and how to become a confident, persuasive speaker. It spans sections for the programme, coaching, partners, feedback, and news, plus per-event detail pages on dynamic routes and a contact form that delivers real email through an Express and Nodemailer API route.",
+    role:
+      "Built the Next.js App Router frontend, the section components and animations, the dynamic event routes, and the contact API with email delivery.",
+    tech: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Express",
+      "Nodemailer",
+      "Framer Motion",
+    ],
+    links: [
+      { label: "GitHub", href: "https://github.com/Bedis75/PitchUp", status: "available" },
+    ],
+    image: "assets/projects/pitchup/pitchup-hero.webp",
+    icon: Presentation,
+    assetHint: "public/assets/projects/pitchup/",
+  },
+  {
+    slug: "gdg-techfest",
+    title: "GDG Monastir TechFest 2026",
+    date: "Apr 2026",
+    category: "Event website / community",
+    summary:
+      "The website for GDG Monastir's TechFest 2026 — home, event programme, about, and partners, backed by Firebase.",
+    details:
+      "Built for the Google Developer Group Monastir community event. The site carries a landing page, the event programme, an about section, and a partners showcase, wired to Firebase and shipped as a static single-page app.",
+    role:
+      "Contributed to the React and TypeScript frontend: page structure, styling, routing, and Firebase wiring, as part of the GDG Monastir team.",
+    tech: ["React", "TypeScript", "Vite", "Firebase", "React Router", "Framer Motion"],
+    links: [
+      {
+        label: "GitHub",
+        href: "https://github.com/rayengata3/GDG-monastir",
+        status: "available",
+      },
+      { label: "Live", status: "coming-soon" },
+    ],
+    image: "assets/projects/gdg-techfest/gdg-techfest-hero.webp",
+    icon: CalendarDays,
+    assetHint: "public/assets/projects/gdg-techfest/",
+  },
+  {
     slug: "printedfeeling",
     title: "Printed Feeling",
     date: "2026 - Present",
@@ -496,6 +606,7 @@ export const projects: Project[] = [
       { label: "Case Study", status: "coming-soon" },
       { label: "Live", status: "coming-soon" },
     ],
+    image: "assets/projects/megatel/megatel-hero.webp",
     icon: Smartphone,
     assetHint: "public/assets/projects/megatel/",
   },
@@ -516,6 +627,7 @@ export const projects: Project[] = [
       { label: "Demo", status: "coming-soon" },
     ],
     featured: true,
+    image: "assets/projects/ttvc/ttvc-hero.webp",
     icon: Mic2,
     assetHint: "public/assets/projects/ttvc/",
   },
@@ -536,6 +648,7 @@ export const projects: Project[] = [
       { label: "Live", status: "coming-soon" },
     ],
     featured: true,
+    image: "assets/projects/secure-file-transfer/secure-file-transfer-hero.webp",
     icon: FileText,
     assetHint: "public/assets/projects/secure-file-transfer/",
   },
@@ -563,6 +676,7 @@ export const projects: Project[] = [
       { label: "GitHub", href: "https://github.com/azyzex/RFID_Smart_Lock" },
       { label: "Demo", status: "coming-soon" },
     ],
+    image: "assets/projects/rfid-smart-lock/rfid-smart-lock-hero.webp",
     icon: RadioTower,
     assetHint: "public/assets/projects/rfid-smart-lock/",
   },
@@ -582,6 +696,7 @@ export const projects: Project[] = [
       { label: "GitHub", status: "coming-soon" },
       { label: "Demo", status: "coming-soon" },
     ],
+    image: "assets/projects/ai-gatekeeper/ai-gatekeeper-hero.webp",
     icon: Bot,
     assetHint: "public/assets/projects/ai-gatekeeper/",
   },
@@ -601,6 +716,7 @@ export const projects: Project[] = [
       { label: "GitHub", href: "https://github.com/azyzex/Peak_physique" },
       { label: "Demo", status: "coming-soon" },
     ],
+    image: "assets/projects/peakphysique/peakphysique-hero.webp",
     icon: HeartPulse,
     assetHint: "public/assets/projects/peakphysique/",
   },
@@ -620,35 +736,9 @@ export const projects: Project[] = [
       { label: "GitHub", status: "coming-soon" },
       { label: "Demo", status: "coming-soon" },
     ],
+    image: "assets/projects/lora-monitoring/lora-monitoring-hero.webp",
     icon: RadioTower,
     assetHint: "public/assets/projects/lora-monitoring/",
-  },
-  {
-    slug: "personal-portfolio",
-    title: "Personal Portfolio Website",
-    date: "Dec 2024 - Present",
-    category: "Frontend / personal website",
-    summary:
-      "A responsive personal portfolio website showcasing skills, projects, contact information, and social links.",
-    details:
-      "The previous portfolio includes animated sections, service and project showcases, social links, contact details, and a responsive layout.",
-    role:
-      "Designed and built the website, including layout, styling, animations, responsiveness, and contact/social integrations.",
-    tech: [
-      "HTML5",
-      "CSS3",
-      "JavaScript",
-      "Bootstrap",
-      "Typed.js",
-      "Animate.css",
-      "WOW.js",
-    ],
-    links: [
-      { label: "Website", href: "https://azyzex.github.io/AzyzPortfolio/" },
-      { label: "GitHub", href: "https://github.com/azyzex/AzyzPortfolio" },
-    ],
-    icon: Globe2,
-    assetHint: "public/assets/projects/personal-portfolio/",
   },
 ];
 

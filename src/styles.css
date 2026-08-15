@@ -674,13 +674,19 @@ img {
   padding: clamp(10px, 2vw, 24px) 0;
 }
 
+/* Both glows must finish inside this box. A radial gradient whose circle is
+   larger than the element it paints gets clipped by the element's edges, which
+   draws a visible rectangle across the section — the fixed 16rem/14rem radii
+   did exactly that inside a box only ~270px tall. Sizing the ellipses in
+   percentages keeps them contained at every viewport width:
+   centre ± radius stays within 0–100% on both axes. */
 .tech-cloud::before {
   position: absolute;
-  inset: 9% 8% 6%;
+  inset: 0;
   z-index: -1;
   background:
-    radial-gradient(circle at 20% 20%, rgba(6, 153, 168, 0.1), transparent 16rem),
-    radial-gradient(circle at 78% 68%, rgba(243, 189, 85, 0.16), transparent 14rem);
+    radial-gradient(ellipse 22% 45% at 26% 50%, rgba(6, 153, 168, 0.1), transparent 100%),
+    radial-gradient(ellipse 20% 42% at 74% 55%, rgba(243, 189, 85, 0.16), transparent 100%);
   content: "";
 }
 
@@ -1294,6 +1300,466 @@ img {
   gap: 22px;
 }
 
+/* ---------- #/projects archive ---------------------------------------- */
+
+.archive-section {
+  padding: 58px 0 96px;
+}
+
+.archive-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 15px 9px 12px;
+  color: var(--ink);
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
+  font-size: 0.78rem;
+  font-weight: 800;
+  transition: transform 180ms ease;
+}
+
+.archive-back:hover {
+  transform: translateY(-2px);
+}
+
+.archive-head {
+  position: relative;
+  max-width: 760px;
+  margin-top: 32px;
+}
+
+.section-kicker {
+  margin: 0 0 12px;
+  color: var(--teal-dark);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.archive-head h1 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2.6rem, 6.4vw, 5rem);
+  font-weight: 850;
+  letter-spacing: -0.06em;
+  line-height: 0.96;
+}
+
+.archive-head h1 em {
+  color: var(--teal-dark);
+  font-family: var(--serif);
+  font-weight: 400;
+}
+
+.archive-head p {
+  max-width: 620px;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.78;
+}
+
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(312px, 1fr));
+  gap: 26px;
+  margin-top: 46px;
+  padding-top: 40px;
+  border-top: 1px dashed rgba(6, 153, 168, 0.24);
+}
+
+/* The card is a <button> so it needs the browser chrome stripped off it. */
+.archive-card {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(20, 28, 34, 0.07);
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+  font: inherit;
+  cursor: pointer;
+}
+
+.archive-card__media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: var(--paper-blue);
+}
+
+.archive-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.archive-artboard {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: 20px;
+  color: var(--teal-dark);
+  text-align: center;
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.92), transparent 9rem),
+    linear-gradient(135deg, #eaf8fa, #f7fbfb);
+}
+
+.archive-artboard span {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-style: italic;
+}
+
+.archive-card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  color: var(--ink);
+  background: var(--warm);
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(27, 43, 50, 0.16);
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.archive-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 22px;
+}
+
+.archive-card__meta {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--teal-dark);
+  font-size: 0.67rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.archive-card__title {
+  display: block;
+  color: var(--ink);
+  font-size: 1.3rem;
+  font-weight: 820;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+.archive-card__date {
+  display: block;
+  margin-top: 7px;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+}
+
+.archive-card__summary {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.89rem;
+  line-height: 1.62;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.archive-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.archive-card__tags span {
+  padding: 6px 10px;
+  color: var(--teal-dark);
+  background: rgba(238, 248, 250, 0.82);
+  border: 1px solid rgba(6, 153, 168, 0.13);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.archive-card__cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 18px;
+  color: var(--ink);
+  font-size: 0.8rem;
+  font-weight: 850;
+}
+
+.archive-card:hover .archive-card__cue {
+  color: var(--teal-dark);
+}
+
+.archive-foot {
+  margin: 46px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.archive-foot a {
+  color: var(--teal-dark);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- project detail dialog ------------------------------------- */
+
+.project-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 42% 34%, rgba(6, 153, 168, 0.12), transparent 24rem),
+    rgba(250, 250, 248, 0.72);
+  backdrop-filter: blur(14px);
+}
+
+/* Two notes tossed down side by side. Each carries its own tilt and tape; the
+   opposing angles are what stop it reading as one split rectangle. */
+.project-modal-split {
+  display: grid;
+  width: min(1300px, 100%);
+  /* Roughly 64/36 — the shot is the thing worth looking at, the text sits
+     beside it in a narrower column. */
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
+  gap: clamp(18px, 2.4vw, 34px);
+  /* centre, not stretch: the media note keeps the image's own 16:10 (never
+     cropped to the height of the text) and floats centred against the taller
+     info note. */
+  align-items: center;
+}
+
+.project-note {
+  position: relative;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(20, 28, 34, 0.08);
+  border-radius: 28px;
+  box-shadow: 0 30px 84px rgba(27, 43, 50, 0.2);
+}
+
+.project-note:focus {
+  outline: none;
+}
+
+/* Strip of tape, same trick as the contact modal */
+.project-note::before {
+  position: absolute;
+  top: -14px;
+  width: 82px;
+  height: 28px;
+  background: rgba(255, 231, 154, 0.76);
+  border-radius: 4px;
+  box-shadow: 0 10px 20px rgba(27, 43, 50, 0.08);
+  content: "";
+}
+
+.project-note--media {
+  display: grid;
+  overflow: hidden;
+  padding: 18px;
+  transform: rotate(-1.6deg);
+}
+
+.project-note--media::before {
+  left: 46px;
+  transform: rotate(-7deg);
+}
+
+.project-note--info {
+  padding: 30px;
+  transform: rotate(1.3deg);
+}
+
+.project-note--info::before {
+  right: 58px;
+  transform: rotate(6deg);
+}
+
+.project-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--ink);
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+}
+
+.project-modal__scroll {
+  max-height: min(72vh, 680px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Every thumbnail is authored at 16:10, so the frame matches it exactly and
+   nothing is cropped. */
+.project-modal__media {
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: var(--paper-blue);
+  border-radius: 18px;
+  box-shadow: var(--shadow-soft);
+}
+
+.project-modal__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-modal__media--empty {
+  display: grid;
+  place-items: center;
+}
+
+.project-modal__meta {
+  margin: 0 0 10px;
+  color: var(--teal-dark);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.project-note h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.9rem, 4.4vw, 2.7rem);
+  font-weight: 840;
+  letter-spacing: -0.05em;
+  line-height: 1.02;
+}
+
+.project-modal__date {
+  margin: 9px 0 0;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+.project-modal__lead {
+  margin: 18px 0 0;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.project-modal__body {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.project-modal__block {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px dashed rgba(6, 153, 168, 0.24);
+}
+
+.project-modal__block h3 {
+  margin: 0 0 12px;
+  color: var(--teal-dark);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.project-modal__block p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.project-modal__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.project-modal__link {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px;
+  color: white;
+  background: var(--ink);
+  border-radius: 999px;
+  box-shadow: 0 14px 30px rgba(27, 43, 50, 0.14);
+  font-size: 0.86rem;
+  font-weight: 850;
+  transition: transform 180ms ease;
+}
+
+.project-modal__link:hover {
+  transform: translateY(-2px);
+}
+
+.project-modal__link--muted {
+  color: var(--faint);
+  background: rgba(238, 248, 250, 0.7);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.project-modal__link--muted:hover {
+  transform: none;
+}
+
+/* Home page hand-off into the archive */
+.work-more {
+  display: grid;
+  justify-items: center;
+  margin-top: 78px;
+  text-align: center;
+}
+
 @media (max-width: 1060px) {
   .work-piece,
   .work-piece--reverse,
@@ -1382,6 +1848,27 @@ img {
     flex-direction: column;
   }
 
+  /* Two notes don't fit side by side here — stack them, image first, and drop
+     the tilts so the stacked pair doesn't zig-zag. */
+  .project-modal-split {
+    width: min(560px, 100%);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .project-note--media,
+  .project-note--info {
+    transform: none;
+  }
+
+  .project-note--media {
+    padding: 12px;
+  }
+
+  .project-modal__scroll {
+    max-height: 42vh;
+  }
+
   .proof-stat-strip {
     grid-template-columns: 1fr;
   }
@@ -1466,6 +1953,43 @@ img {
   .footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .archive-section {
+    padding: 40px 0 72px;
+  }
+
+  .archive-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 34px;
+    padding-top: 30px;
+  }
+
+  .archive-card__body {
+    padding: 18px;
+  }
+
+  .project-modal-backdrop {
+    padding: 14px;
+  }
+
+  .project-note--info {
+    padding: 24px 20px;
+    border-radius: 22px;
+  }
+
+  .project-modal__scroll {
+    max-height: 46vh;
+  }
+
+  .project-modal__link {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  .work-more {
+    margin-top: 54px;
   }
 }
 

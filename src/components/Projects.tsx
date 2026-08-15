@@ -1,7 +1,8 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { projects, socialLinks, type LinkItem, type Project } from "../data/portfolio";
 import { assetPath } from "../utils/assets";
+import { routes } from "../utils/router";
 import { fadeUp, softScale, spring, staggerContainer, viewportOnce } from "../utils/motion";
 import { SectionHeader } from "./SectionHeader";
 
@@ -104,6 +105,19 @@ export function Projects() {
         {featured.map((project, index) => (
           <WorkPiece key={project.slug} project={project} index={index} />
         ))}
+      </motion.div>
+
+      <motion.div className="work-more" variants={fadeUp}>
+        <motion.a
+          className="button button--primary"
+          href={routes.projects}
+          whileHover={{ y: -3 }}
+          whileTap={{ scale: 0.98 }}
+          transition={spring}
+        >
+          See all {projects.length} projects
+          <ArrowRight size={17} aria-hidden="true" />
+        </motion.a>
       </motion.div>
     </motion.section>
   );

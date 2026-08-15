@@ -13,9 +13,9 @@ certificates, LinkedIn recommendations, and contact options.
 - `package.json` name: `aziz-portfolio` (v1.0.0)
 - Live URL / GitHub Pages base: `https://azyzex.github.io/AzyzPortfolio/`
 - Git remote: `https://github.com/azyzex/AzyzPortfolio.git`
-- This folder (`NewPortfolio`) is a **rewrite** of an older portfolio. The older
-  one (vanilla HTML/CSS/Bootstrap/Typed.js) is itself listed as a project entry
-  ("Personal Portfolio Website").
+- This folder (`NewPortfolio`) is a **rewrite** of an older portfolio (vanilla
+  HTML/CSS/Bootstrap/Typed.js). The old one is **not** a portfolio project and
+  must not be listed as one — Aziz is deleting it. Don't re-add it.
 
 ## Stack
 
