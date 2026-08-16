@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowUpRight, Sparkles, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { projects, type Project } from "../data/portfolio";
@@ -41,12 +41,6 @@ function ArchiveCard({ project, onOpen }: { project: Project; onOpen: () => void
     >
       <span className="archive-card__media">
         <ProjectMedia project={project} />
-        {project.featured ? (
-          <span className="archive-card__badge">
-            <Sparkles size={11} aria-hidden="true" />
-            Featured
-          </span>
-        ) : null}
       </span>
 
       <span className="archive-card__body">

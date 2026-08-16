@@ -404,11 +404,8 @@ export const projects: Project[] = [
       "Built the real-time architecture end to end: the Socket.IO event contract between server and client, the four role-based screens, per-player clocks, room lifecycle, and reconnection behaviour.",
     tech: ["React", "React Router", "Socket.IO", "Express", "Node.js", "QR join"],
     links: [
-      {
-        label: "GitHub",
-        href: "https://github.com/Bedis75/buzzer-quiz",
-        status: "available",
-      },
+      // Repo is private (owned by a teammate) — a public link would 404.
+      { label: "GitHub", status: "coming-soon" },
       { label: "Demo", status: "coming-soon" },
     ],
     image: "assets/projects/the-roof/the-roof-hero.webp",
@@ -436,7 +433,7 @@ export const projects: Project[] = [
       "Framer Motion",
     ],
     links: [
-      { label: "GitHub", href: "https://github.com/Bedis75/PitchUp", status: "available" },
+      { label: "GitHub", status: "coming-soon" },
     ],
     image: "assets/projects/pitchup/pitchup-hero.webp",
     icon: Presentation,
@@ -455,11 +452,8 @@ export const projects: Project[] = [
       "Contributed to the React and TypeScript frontend: page structure, styling, routing, and Firebase wiring, as part of the GDG Monastir team.",
     tech: ["React", "TypeScript", "Vite", "Firebase", "React Router", "Framer Motion"],
     links: [
-      {
-        label: "GitHub",
-        href: "https://github.com/rayengata3/GDG-monastir",
-        status: "available",
-      },
+      // Repo is private (owned by the GDG team) — a public link would 404.
+      { label: "GitHub", status: "coming-soon" },
       { label: "Live", status: "coming-soon" },
     ],
     image: "assets/projects/gdg-techfest/gdg-techfest-hero.webp",

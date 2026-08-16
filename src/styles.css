@@ -1423,24 +1423,6 @@ img {
   font-style: italic;
 }
 
-.archive-card__badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  color: var(--ink);
-  background: var(--warm);
-  border-radius: 999px;
-  box-shadow: 0 8px 18px rgba(27, 43, 50, 0.16);
-  font-size: 0.64rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .archive-card__body {
   display: flex;
   flex: 1;
