@@ -381,11 +381,8 @@ export const projects: Project[] = [
       "GitHub Actions",
     ],
     links: [
-      {
-        label: "GitHub",
-        href: "https://github.com/azyzex/ClaudeCodeSounds",
-        status: "available",
-      },
+      { label: "GitHub", href: "https://github.com/azyzex/ClaudeCodeSounds", status: "available" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_i-have-upgraded-claudesounds-version-071-activity-7492746352804704256-EK8C", status: "available" },
     ],
     image: "assets/projects/earshot/earshot-hero.webp",
     icon: BellRing,
@@ -404,9 +401,7 @@ export const projects: Project[] = [
       "Built the real-time architecture end to end: the Socket.IO event contract between server and client, the four role-based screens, per-player clocks, room lifecycle, and reconnection behaviour.",
     tech: ["React", "React Router", "Socket.IO", "Express", "Node.js", "QR join"],
     links: [
-      // Repo is private (owned by a teammate) — a public link would 404.
-      { label: "GitHub", status: "coming-soon" },
-      { label: "Demo", status: "coming-soon" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_webdevelopment-nodejs-react-activity-7493001749671190528-qLE2", status: "available" },
     ],
     image: "assets/projects/the-roof/the-roof-hero.webp",
     icon: Gamepad2,
@@ -433,7 +428,7 @@ export const projects: Project[] = [
       "Framer Motion",
     ],
     links: [
-      { label: "GitHub", status: "coming-soon" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_a-project-that-never-made-it-to-launch-pitchup-share-7494718735862304768-MrZe", status: "available" },
     ],
     image: "assets/projects/pitchup/pitchup-hero.webp",
     icon: Presentation,
@@ -452,9 +447,7 @@ export const projects: Project[] = [
       "Contributed to the React and TypeScript frontend: page structure, styling, routing, and Firebase wiring, as part of the GDG Monastir team.",
     tech: ["React", "TypeScript", "Vite", "Firebase", "React Router", "Framer Motion"],
     links: [
-      // Repo is private (owned by the GDG team) — a public link would 404.
-      { label: "GitHub", status: "coming-soon" },
-      { label: "Live", status: "coming-soon" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_gdg-website-of-techfest-2026-ugcPost-7494722371380244480-JV_Q", status: "available" },
     ],
     image: "assets/projects/gdg-techfest/gdg-techfest-hero.webp",
     icon: CalendarDays,
@@ -483,11 +476,8 @@ export const projects: Project[] = [
     ],
     links: [
       { label: "Live", href: "https://printedfeeling.com", status: "available" },
-      {
-        label: "Instagram",
-        href: "https://www.instagram.com/printed_feeling1/",
-        status: "available",
-      },
+      { label: "Instagram", href: "https://www.instagram.com/printed_feeling1/", status: "available" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_printed-feeling-is-live-printedfeelingcom-activity-7473910622917705728-d-7a", status: "available" },
     ],
     featured: true,
     image: "assets/projects/printedfeeling/printedfeeling-hero.webp",
@@ -507,12 +497,8 @@ export const projects: Project[] = [
       "Built as a recent TypeScript project focused on safer AI workflows and practical developer security.",
     tech: ["TypeScript", "Chrome Extension", "Local Detection", "AI Safety"],
     links: [
-      { label: "GitHub", href: "https://github.com/azyzex/PromptProtect" },
-      {
-        label: "Write-up",
-        href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_security-appsec-llm-share-7457141997162778624-_tu7/",
-        status: "available",
-      },
+      { label: "GitHub", href: "https://github.com/azyzex/PromptProtect", status: "available" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_security-appsec-llm-share-7457141997162778624-_tu7/", status: "available" },
     ],
     featured: true,
     image: "assets/projects/promptprotect/promptprotect-hero.webp",
@@ -544,6 +530,7 @@ export const projects: Project[] = [
     ],
     links: [
       { label: "Digika.Tn", href: "https://www.digika.tn", status: "available" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_im-pleased-to-share-that-i-had-the-opportunity-activity-7428157409791098880-hgM0", status: "available" },
     ],
     featured: true,
     image: "assets/projects/qnow/qnow-hero.webp",
@@ -573,11 +560,7 @@ export const projects: Project[] = [
     ],
     links: [
       { label: "Live", href: "https://tunia.pages.dev", status: "available" },
-      {
-        label: "Write-up",
-        href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_newproject-ugcPost-7423397660776296448-Swzx/",
-        status: "available",
-      },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_newproject-ugcPost-7423397660776296448-Swzx/", status: "available" },
     ],
     featured: true,
     image: "assets/projects/tuniai/tuniai-hero.webp",
@@ -597,8 +580,7 @@ export const projects: Project[] = [
       "Contributed as a mobile developer and team member, working on app development, UI implementation, authentication flow, and agile collaboration.",
     tech: ["Flutter", "Dart", "Firebase", "OAuth", "JWT", "Jira", "GitHub"],
     links: [
-      { label: "Case Study", status: "coming-soon" },
-      { label: "Live", status: "coming-soon" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_im-happy-to-share-this-mobile-application-activity-7242179650620141569-Esvz", status: "available" },
     ],
     image: "assets/projects/megatel/megatel-hero.webp",
     icon: Smartphone,
@@ -617,8 +599,8 @@ export const projects: Project[] = [
       "Developed the app, GUI, text-to-speech integration, audio routing workflow, dependency bundling, and Windows packaging.",
     tech: ["Python", "Tkinter", "gTTS", "Virtual Audio Cable", "Inno Setup"],
     links: [
-      { label: "GitHub", href: "https://github.com/azyzex/TTVC" },
-      { label: "Demo", status: "coming-soon" },
+      { label: "GitHub", href: "https://github.com/azyzex/TTVC", status: "available" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_accessibility-opensource-python-activity-7493075999623098370-eUUu", status: "available" },
     ],
     featured: true,
     image: "assets/projects/ttvc/ttvc-hero.webp",
@@ -638,8 +620,9 @@ export const projects: Project[] = [
       "Developed the interface, validation, local server setup, Flask backend, Bootstrap frontend, and secure SFTP transfer logic.",
     tech: ["Python", "Flask", "Bootstrap", "SFTP", "SSH", "HTML", "CSS"],
     links: [
-      { label: "GitHub", href: "https://github.com/azyzex/SFTP-Website" },
-      { label: "Live", status: "coming-soon" },
+      { label: "GitHub", href: "https://github.com/azyzex/SFTP-Website", status: "available" },
+      { label: "Udemy Course", href: "https://www.udemy.com/course/sftp-server-setup-and-web-based-file-transfers/", status: "available" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_sftp-server-setup-and-web-based-file-transfers-activity-7339786396775116800-Anyv", status: "available" },
     ],
     featured: true,
     image: "assets/projects/secure-file-transfer/secure-file-transfer-hero.webp",
@@ -667,8 +650,8 @@ export const projects: Project[] = [
       "JavaScript",
     ],
     links: [
-      { label: "GitHub", href: "https://github.com/azyzex/RFID_Smart_Lock" },
-      { label: "Demo", status: "coming-soon" },
+      { label: "GitHub", href: "https://github.com/azyzex/RFID_Smart_Lock", status: "available" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_rfid-smart-lock-system-presentation-activity-7274871227628896256-7y19", status: "available" },
     ],
     image: "assets/projects/rfid-smart-lock/rfid-smart-lock-hero.webp",
     icon: RadioTower,
@@ -687,8 +670,7 @@ export const projects: Project[] = [
       "Developed the computer vision workflow, detection/recognition logic, feedback behavior, and access tracking.",
     tech: ["Python", "OpenCV", "NumPy", "Raspberry Pi 4", "Camera"],
     links: [
-      { label: "GitHub", status: "coming-soon" },
-      { label: "Demo", status: "coming-soon" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_rapport-activity-7276644683580116992-qv3X", status: "available" },
     ],
     image: "assets/projects/ai-gatekeeper/ai-gatekeeper-hero.webp",
     icon: Bot,
@@ -707,8 +689,7 @@ export const projects: Project[] = [
       "Developed the mobile app, UI screens, input handling, health calculations, and Android layout implementation.",
     tech: ["Java", "Android Studio", "XML", "Android UI"],
     links: [
-      { label: "GitHub", href: "https://github.com/azyzex/Peak_physique" },
-      { label: "Demo", status: "coming-soon" },
+      { label: "GitHub", href: "https://github.com/azyzex/Peak_physique", status: "available" },
     ],
     image: "assets/projects/peakphysique/peakphysique-hero.webp",
     icon: HeartPulse,
@@ -727,8 +708,7 @@ export const projects: Project[] = [
       "Built the sensor integration, measurement logic, LoRa communication workflow, and embedded monitoring behavior.",
     tech: ["Arduino", "DHT11", "LoRa", "Embedded C/C++", "Sensors"],
     links: [
-      { label: "GitHub", status: "coming-soon" },
-      { label: "Demo", status: "coming-soon" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_lora-project-presentation-activity-7276640723691573248-AKYk", status: "available" },
     ],
     image: "assets/projects/lora-monitoring/lora-monitoring-hero.webp",
     icon: RadioTower,
@@ -817,6 +797,20 @@ export const education: TimelineItem[] = [
 ];
 
 export const certificates: Certificate[] = [
+  {
+    title: "AEO Fundamentals",
+    issuer: "HubSpot Academy",
+    date: "Aug 2026 - valid to Sep 2028",
+    file: "assets/certificates/AEO certificate.png",
+    status: "verified",
+  },
+  {
+    title: "On-Page SEO and AI Search Essentials",
+    issuer: "Semrush Academy",
+    date: "Aug 2026",
+    file: "assets/certificates/SEO certificate.png",
+    status: "verified",
+  },
   {
     title: "EF SET English Certificate",
     issuer: "EF SET",
