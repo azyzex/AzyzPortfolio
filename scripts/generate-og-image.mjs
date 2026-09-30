@@ -14,7 +14,7 @@ const HEIGHT = 630;
 
 const OUT_DIR = path.join("public", "assets", "og");
 const OUT_FILE = path.join(OUT_DIR, "og-card.png");
-const PHOTO = path.join("public", "assets", "profile", "1770583574950.jfif");
+const PHOTO = path.join("public", "assets", "profile", "aziz.webp");
 
 const INK = "#15191d";
 const MUTED = "#66737b";

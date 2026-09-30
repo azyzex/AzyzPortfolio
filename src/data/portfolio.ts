@@ -1,5 +1,4 @@
 import {
-  Award,
   BellRing,
   BookOpen,
   Bot,
@@ -7,6 +6,7 @@ import {
   CalendarDays,
   Code2,
   Database,
+  DatabaseZap,
   FileText,
   Gamepad2,
   Github,
@@ -24,7 +24,6 @@ import {
   RadioTower,
   ShieldCheck,
   Smartphone,
-  Wrench,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -46,6 +45,13 @@ export type Project = {
   links: LinkItem[];
   featured?: boolean;
   image?: string;
+  // Optional clip, given as a path WITHOUT extension: both `<path>.webm`
+  // (VP9) and `<path>.mp4` (H.264) must exist. WebM is listed first because
+  // some systems (e.g. Windows "N" editions) cannot decode H.264 at all; the
+  // MP4 covers older Safari. On the archive page the card shows `image` and
+  // plays this muted on hover; the detail dialog plays it with controls.
+  // Encoding recipe is in CLAUDE.md.
+  video?: string;
   icon: LucideIcon;
   assetHint: string;
 };
@@ -94,7 +100,7 @@ export const profile = {
     "I like turning ideas into working products, and I am comfortable moving between frontend, backend, mobile, AI workflows, and hardware-connected systems when the project needs it.",
   availability:
     "Open to jobs, internships, freelance projects, remote work, collaborations, academic opportunities, and professional networking.",
-  photo: "assets/profile/1770583574950.jfif",
+  photo: "assets/profile/aziz.webp",
 };
 
 // Primary header navigation. This is the single source of truth — Header.tsx
@@ -359,6 +365,35 @@ export const techItems: TechItem[] = [
 ];
 
 export const projects: Project[] = [
+  {
+    slug: "rehearsal",
+    title: "Rehearsal",
+    date: "Aug 2026 - Sep 2026",
+    category: "Developer tooling · VS Code extension",
+    summary:
+      "A VS Code extension that runs a database migration against your real data inside a transaction that is rolled back, then tells you what it would have done — as counts, not guesses.",
+    details:
+      "Migration tools tell you which statements will run; none of them tell you what those statements will do to the data that is in the table right now. Rehearsal does. Open a .sql file and every statement becomes a verdict with a number behind it: 40,072 rows lose a value, 12 rows have no email and will stop a NOT NULL halfway, this index build blocks writes for about a second. It works across Postgres, MySQL, MongoDB and SQLite, and the differences between them are enforced in code — MySQL commits schema changes silently, so the adapter refuses to run them and counts instead; MongoDB needs a replica set to roll anything back, so it refuses to preview without one. Around that sits a schema explorer you can edit, safer rewrites offered as quick fixes, down migrations that are actually run and checked, a rescue file of any rows a change would destroy, and a CLI that fails a pull request on a destructive migration.",
+    role:
+      "Designed and built it alone: the four database adapters, the statement classifier and analysis engine, the webview panels and schema explorer, the CLI and GitHub Action, and a test suite of 1,235 tests that runs against real Postgres, MySQL, MongoDB and SQLite instances rather than mocks.",
+    tech: [
+      "TypeScript",
+      "VS Code API",
+      "PostgreSQL",
+      "MySQL",
+      "MongoDB",
+      "SQLite",
+      "Node.js",
+      "Playwright",
+    ],
+    links: [
+      { label: "GitHub", href: "https://github.com/azyzex/Rehearsal", status: "available" },
+    ],
+    image: "assets/projects/rehearsal/rehearsal-hero.webp",
+    video: "assets/projects/rehearsal/rehearsal-preview",
+    icon: DatabaseZap,
+    assetHint: "public/assets/projects/rehearsal/",
+  },
   {
     slug: "earshot",
     title: "Earshot",
@@ -801,189 +836,189 @@ export const certificates: Certificate[] = [
     title: "AEO Fundamentals",
     issuer: "HubSpot Academy",
     date: "Aug 2026 - valid to Sep 2028",
-    file: "assets/certificates/AEO certificate.png",
+    file: "assets/certificates/aeo-certificate.webp",
     status: "verified",
   },
   {
     title: "On-Page SEO and AI Search Essentials",
     issuer: "Semrush Academy",
     date: "Aug 2026",
-    file: "assets/certificates/SEO certificate.png",
+    file: "assets/certificates/seo-certificate.webp",
     status: "verified",
   },
   {
     title: "EF SET English Certificate",
     issuer: "EF SET",
     date: "Jun 2024 - 73/100, C2 Proficient",
-    file: "assets/certificates/EF SET Certificate-1.jpg",
+    file: "assets/certificates/ef-set-certificate.webp",
     status: "verified",
   },
   {
     title: "Python Programming Online Diploma",
     issuer: "Alison",
     date: "Certificate",
-    file: "assets/certificates/Alison Python Programming Online Diploma Certificate.jpg",
+    file: "assets/certificates/alison-python-programming-online-diploma-certificate.webp",
     status: "verified",
   },
   {
     title: "Overview of AI",
     issuer: "Huawei ICT Academy",
     date: "Certificate of Completion",
-    file: "assets/certificates/huawei ict certificate of completion overview of ai.png",
+    file: "assets/certificates/huawei-ict-certificate-of-completion-overview-of-ai.webp",
     status: "verified",
   },
   {
     title: "Introduction to Modern AI",
     issuer: "Cisco",
     date: "Certificate",
-    file: "assets/certificates/cisco introduction to modern ai.png",
+    file: "assets/certificates/cisco-introduction-to-modern-ai.webp",
     status: "verified",
   },
   {
     title: "Introduction to Cybersecurity",
     issuer: "Cisco",
     date: "Certificate",
-    file: "assets/certificates/I2C CISCO introduction to cybersecurity Certificate-1.jpg",
+    file: "assets/certificates/i2c-cisco-introduction-to-cybersecurity-certificate.webp",
     status: "verified",
   },
   {
     title: "Generative AI",
     issuer: "Databricks",
     date: "Certificate",
-    file: "assets/certificates/databticks generative ai certificate.png",
+    file: "assets/certificates/databricks-generative-ai-certificate.webp",
     status: "verified",
   },
   {
     title: "Digital Skills: Artificial Intelligence",
     issuer: "FutureLearn",
     date: "Certificate",
-    file: "assets/certificates/FutureLearn  DIGITAL SKILLS ARTIFICIAL INTELLIGENCE certificate-1.jpg",
+    file: "assets/certificates/futurelearn-digital-skills-artificial-intelligence-certificate.webp",
     status: "verified",
   },
   {
     title: "Introduction to Generative AI",
     issuer: "Google Cloud",
     date: "Certificate",
-    file: "assets/certificates/Google Cloud Introduction to Generative AI.png",
+    file: "assets/certificates/google-cloud-introduction-to-generative-ai.webp",
     status: "verified",
   },
   {
     title: "Introduction to Machine Learning for Earth Observation",
     issuer: "EO College",
     date: "Certificate",
-    file: "assets/certificates/eo college introduction to machine learning for earth observation certificate.png",
+    file: "assets/certificates/eo-college-machine-learning-for-earth-observation-certificate.webp",
     status: "verified",
   },
   {
     title: "Information Security",
     issuer: "OpenLearn",
     date: "Statement of Participation",
-    file: "assets/certificates/OpenLearn Information security Statement of Participation Certificate-1.jpg",
+    file: "assets/certificates/openlearn-information-security-certificate.webp",
     status: "verified",
   },
   {
     title: "Accelerating Deep Learning with GPUs",
     issuer: "IBM",
     date: "Certificate",
-    file: "assets/certificates/IBM Accelerating Deep Learning with GPUs Certificate-1.jpg",
+    file: "assets/certificates/ibm-accelerating-deep-learning-with-gpus-certificate.webp",
     status: "verified",
   },
   {
     title: "Career Essentials in GitHub Professional Certificate",
     issuer: "LinkedIn Learning",
     date: "Professional Certificate",
-    file: "assets/certificates/linked in learning career essentials in github professional certificate.png",
+    file: "assets/certificates/linkedin-learning-career-essentials-in-github-certificate.webp",
     status: "verified",
   },
   {
     title: "Figma",
     issuer: "LottieFiles",
     date: "Certificate",
-    file: "assets/certificates/lottiefiles figma certificate.png",
+    file: "assets/certificates/lottiefiles-figma-certificate.webp",
     status: "verified",
   },
   {
     title: "Backend Engineering with Node.js",
     issuer: "Manara",
     date: "Certificate",
-    file: "assets/certificates/manara backend engineering with nodejs.png",
+    file: "assets/certificates/manara-backend-engineering-with-nodejs.webp",
     status: "verified",
   },
   {
     title: "Flutter Test Participation",
-    issuer: "Pentalog",
+    issuer: "SkillValue by Pentalog",
     date: "Certificate",
-    file: "assets/certificates/Pentalog Fluttre Test Participation Certificate.png",
+    file: "assets/certificates/pentalog-flutter-test-participation-certificate.webp",
     status: "verified",
   },
   {
     title: "Python Test Participation",
-    issuer: "Pertilog",
+    issuer: "SkillValue by Pentalog",
     date: "Certificate",
-    file: "assets/certificates/Pertilog Python test participation certificate.jpg",
+    file: "assets/certificates/pentalog-python-test-participation-certificate.webp",
     status: "verified",
   },
   {
     title: "Big Data Hadoop Course",
     issuer: "Udemy",
     date: "Certificate",
-    file: "assets/certificates/Udemy big data hadoop course.jpg",
+    file: "assets/certificates/udemy-big-data-hadoop-course.webp",
     status: "verified",
   },
   {
     title: "Internet of Things Online Course",
     issuer: "Udemy",
     date: "Certificate",
-    file: "assets/certificates/Udemy Internet of Things Online Course Certificate-1.jpg",
+    file: "assets/certificates/udemy-internet-of-things-online-course-certificate.webp",
     status: "verified",
   },
   {
     title: "Python Developer Essentials Immersive Bootcamp for 2024",
     issuer: "Udemy",
     date: "Certificate",
-    file: "assets/certificates/Udemy Python developer essentials immersive bootamp for 2024 certificate-1.jpg",
+    file: "assets/certificates/udemy-python-developer-essentials-bootcamp-2024-certificate.webp",
     status: "verified",
   },
   {
     title: "Python Face Recognition",
     issuer: "Udemy",
     date: "Certificate",
-    file: "assets/certificates/Udemy python Face Recognition Certificate-1.jpg",
+    file: "assets/certificates/udemy-python-face-recognition-certificate.webp",
     status: "verified",
   },
   {
     title: "Python Performance Optimisation",
     issuer: "Udemy",
     date: "Certificate",
-    file: "assets/certificates/Udemy Python Performance Optimisation Certificate-1.jpg",
+    file: "assets/certificates/udemy-python-performance-optimisation-certificate.webp",
     status: "verified",
   },
   {
     title: "Python Programming Masterclass",
     issuer: "Udemy",
     date: "Certificate",
-    file: "assets/certificates/Udemy python programming masterclass certificate.jpg",
+    file: "assets/certificates/udemy-python-programming-masterclass-certificate.webp",
     status: "verified",
   },
   {
     title: "Unsupervised Learning: Clustering",
     issuer: "upGrad",
     date: "Certificate",
-    file: "assets/certificates/upgrad unsupervised learning clustering.png",
+    file: "assets/certificates/upgrad-unsupervised-learning-clustering.webp",
     status: "verified",
   },
   {
     title: "Certificate of Appreciation",
     issuer: "Elite",
     date: "Certificate",
-    file: "assets/certificates/Guenni Mohammed Aziz Elite certificate of appreciation-1.jpg",
+    file: "assets/certificates/elite-certificate-of-appreciation.webp",
     status: "verified",
   },
   {
     title: "Edraak Certificate",
     issuer: "Edraak",
     date: "Certificate",
-    file: "assets/certificates/Edraak.png",
+    file: "assets/certificates/edraak.webp",
     status: "verified",
   },
 ];
@@ -999,7 +1034,7 @@ export const recommendations: Recommendation[] = [
       "I had the pleasure of working with Aziz at Nes Academy. He is a driven and dedicated professional who consistently brings positive energy and strong creativity to the team. His ability to generate innovative ideas makes him a valuable asset in any environment. I highly recommend him for any opportunity.",
     source: "LinkedIn",
     date: "Apr 21, 2026",
-    image: "assets/recommendations/anis-dakhloui/1768391787955.png",
+    image: "assets/recommendations/anis-dakhloui/avatar.webp",
     profileUrl: linkedInRecommendationsUrl,
   },
   {
@@ -1009,7 +1044,7 @@ export const recommendations: Recommendation[] = [
       "I had the chance to study and work closely with Aziz during our time in college. We often collaborated on projects and spent hours brainstorming ideas together, and I was always impressed by their drive, creativity, and problem-solving skills. They have a real talent for breaking down complex problems and finding practical solutions, while also encouraging teamwork and open discussion. Working with them pushed me to think differently and aim higher. I have no doubt that they'll bring the same focus, innovation, and collaborative mindset to any role they take on.",
     source: "LinkedIn",
     date: "Oct 1, 2025",
-    image: "assets/recommendations/mohamed-aziz-hadj-hassen/1759330354405.png",
+    image: "assets/recommendations/mohamed-aziz-hadj-hassen/avatar.webp",
     profileUrl: linkedInRecommendationsUrl,
   },
   {
@@ -1019,17 +1054,17 @@ export const recommendations: Recommendation[] = [
       "I've had the pleasure of knowing Mohamed Aziz Guenni since our college days, and what has always stood out to me is his strong technical expertise combined with genuine dedication to his work. He consistently approaches challenges with persistence and creativity, ensuring not only that solutions are found but that they are reliable and well-executed. His professionalism, commitment, and problem-solving mindset make him someone I deeply admire and highly recommend.",
     source: "LinkedIn",
     date: "Sep 13, 2025",
-    image: "assets/recommendations/youssef-bouzid/1775503564910.png",
+    image: "assets/recommendations/youssef-bouzid/avatar.webp",
     profileUrl: linkedInRecommendationsUrl,
   },
   {
-    name: "mohamed ali hamroun",
+    name: "Mohamed Ali Hamroun",
     role: "Software Engineer | Computer Science",
     quote:
       "I've known Mohamed Aziz Guenni since our college days, and what always stood out is his strong technical skills and dedication to his work. He's the kind of person who approaches problems with persistence and creativity, always making sure to deliver solid results. His professionalism and commitment are qualities I truly admire.",
     source: "LinkedIn",
     date: "Aug 30, 2025",
-    image: "assets/recommendations/mohamed-ali-hamroun/1750170996007.png",
+    image: "assets/recommendations/mohamed-ali-hamroun/avatar.webp",
     profileUrl: linkedInRecommendationsUrl,
   },
   {
@@ -1039,7 +1074,7 @@ export const recommendations: Recommendation[] = [
       "An exceptional project partner passionate, reliable, and highly skilled at problem-solving. They stay composed under pressure, handle stress with professionalism, and consistently bring creative solutions to the table. Truly a pleasure to work with and an asset to any team.",
     source: "LinkedIn",
     date: "Aug 29, 2025",
-    image: "assets/recommendations/mohamed-amine-guitouni/1750465418662.png",
+    image: "assets/recommendations/mohamed-amine-guitouni/avatar.webp",
     profileUrl: linkedInRecommendationsUrl,
   },
   {
@@ -1048,7 +1083,7 @@ export const recommendations: Recommendation[] = [
     quote:
       "I had the pleasure of collaborating with Aziz on several projects, where I had the opportunity to appreciate his strong technical skills, dedication, and problem-solving mindset. Aziz consistently demonstrates a great ability to analyze challenges, learn quickly, and find effective solutions. He brings creativity, professionalism, and a positive attitude to every collaboration. Beyond his technical abilities, Aziz is a reliable and proactive teammate who communicates clearly and contributes valuable ideas during discussions and project development. His commitment and willingness to improve make him a great professional to work with. I highly recommend Aziz to anyone looking for a skilled, motivated, and dependable collaborator. I look forward to seeing his future achievements and hopefully working together again.",
     source: "LinkedIn",
-    image: "assets/recommendations/bedis-bensaid/487511787_2970070899821836_3794993042439798400_n.jpg",
+    image: "assets/recommendations/bedis-bensaid/avatar.webp",
     profileUrl: linkedInRecommendationsUrl,
   },
 ];
@@ -1086,35 +1121,21 @@ export const socialLinks: (LinkItem & { icon: LucideIcon })[] = [
   },
 ];
 
-export const cvDownloads: LinkItem[] = [
-  {
-    label: "Download CV - English",
-    href: "assets/cv/cv guenni mohamed aziz.pdf",
-    status: "available" as const,
-  },
-  {
-    label: "Download CV - French",
-    href: "/assets/cv/mohamed-aziz-guenni-cv-fr.pdf",
-    status: "needs-file" as const,
-  },
-];
+// The CV PDF holds both the English and the French version, one after the
+// other, so there is a single download.
+export const cv: LinkItem = {
+  label: "CV (English & French)",
+  href: "assets/cv/cv guenni mohamed aziz.pdf",
+  status: "available",
+};
 
-export const proofStats = [
-  { label: "Main focus", value: "Web + Mobile + AI" },
-  { label: "Education", value: "Computer Engineering" },
-  { label: "Current path", value: "Master's in Networks" },
-];
-
-export const manualAssetChecklist = [
-  "Add a real profile photo to public/assets/profile/.",
-  "Add project screenshots or short demo images to each public/assets/projects/<project>/ folder.",
-  "Add actual certificate images or PDFs to public/assets/certificates/.",
-  "Add both English and French CV PDFs to public/assets/cv/.",
-  "Paste exact recommendation quotes in public/assets/recommendations/put-exact-quotes-here.txt, then copy the approved quotes into src/data/portfolio.ts.",
-  "Add your Formspree endpoint as VITE_FORMSPREE_ENDPOINT when it is ready.",
-];
-
-export const utilityIcons = {
-  Award,
-  Wrench,
+// The online course promoted at the bottom of the home page.
+export const course = {
+  title: "SFTP Server Setup and Web-Based File Transfers",
+  platform: "Udemy",
+  href: "https://www.udemy.com/course/sftp-server-setup-and-web-based-file-transfers/",
+  image: "assets/course/sftp-course.webp",
+  summary:
+    "The course that grew out of my Sagemcom internship project: setting up an SFTP server, authenticating with SSH, and putting a Flask web interface in front of it so files can be uploaded and transferred securely from a browser.",
+  topics: ["SFTP server setup", "SSH authentication", "Flask upload interface", "Secure file transfer"],
 };

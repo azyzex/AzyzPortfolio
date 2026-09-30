@@ -1,4 +1,12 @@
-import { ArrowLeft, ArrowUpRight, X } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Image as ImageIcon,
+  Play,
+  X,
+} from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { projects, type Project } from "../data/portfolio";
@@ -27,7 +35,83 @@ function ProjectMedia({ project, large }: { project: Project; large?: boolean })
   );
 }
 
+// WebM first: some systems (Windows "N" editions, Electron-based browsers)
+// cannot decode H.264 at all. The MP4 covers older Safari.
+function VideoSources({ base }: { base: string }) {
+  return (
+    <>
+      <source src={assetPath(`${base}.webm`)} type="video/webm" />
+      <source src={assetPath(`${base}.mp4`)} type="video/mp4" />
+    </>
+  );
+}
+
+/**
+ * The card's clip: the thumbnail stays underneath as the poster, and the video
+ * fades in over it once it is actually playing, so a slow network shows the
+ * still rather than a black box. Nothing is downloaded until the first hover —
+ * the grid would otherwise fetch every clip on page load.
+ */
+function CardVideo({ src, active }: { src: string; active: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [armed, setArmed] = useState(false);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    if (active) {
+      setArmed(true);
+    }
+  }, [active]);
+
+  // <source> children added after mount are ignored until load() is called.
+  useEffect(() => {
+    if (armed) {
+      videoRef.current?.load();
+    }
+  }, [armed]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !armed) {
+      return;
+    }
+    if (active) {
+      // play() rejects if the pointer leaves before it starts; that's fine.
+      video.play().catch(() => undefined);
+      return;
+    }
+    // Fade out on the frame it was showing, and only rewind once it's
+    // invisible — rewinding first would visibly jump mid-fade.
+    video.pause();
+    setPlaying(false);
+    const rewind = window.setTimeout(() => {
+      video.currentTime = 0;
+    }, 520);
+    return () => window.clearTimeout(rewind);
+  }, [active, armed]);
+
+  return (
+    <video
+      ref={videoRef}
+      className={`archive-card__video${playing ? " is-playing" : ""}`}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-hidden="true"
+      tabIndex={-1}
+      onPlaying={() => setPlaying(true)}
+    >
+      {armed ? <VideoSources base={src} /> : null}
+    </video>
+  );
+}
+
 function ArchiveCard({ project, onOpen }: { project: Project; onOpen: () => void }) {
+  const [hovered, setHovered] = useState(false);
+  // Deliberately NOT gated on prefers-reduced-motion: playback only ever
+  // starts because the visitor pointed at the card, which is their choice.
+
   return (
     <motion.button
       type="button"
@@ -37,10 +121,25 @@ function ArchiveCard({ project, onOpen }: { project: Project; onOpen: () => void
       whileTap={{ scale: 0.99 }}
       transition={spring}
       onClick={onOpen}
+      // Mouse only: on touch, a tap opens the dialog, which plays the clip.
+      onPointerEnter={(event) => event.pointerType === "mouse" && setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
       aria-label={`${project.title} — view details`}
     >
       <span className="archive-card__media">
         <ProjectMedia project={project} />
+        {project.video ? (
+          <>
+            <CardVideo src={project.video} active={hovered} />
+            <span className={`archive-card__badge${hovered ? " is-hidden" : ""}`} aria-hidden="true">
+              <Play size={11} fill="currentColor" />
+              <span className="archive-card__badge-hover">Hover to play</span>
+              <span className="archive-card__badge-touch">Video inside</span>
+            </span>
+          </>
+        ) : null}
       </span>
 
       <span className="archive-card__body">
@@ -62,6 +161,118 @@ function ArchiveCard({ project, onOpen }: { project: Project; onOpen: () => void
         </span>
       </span>
     </motion.button>
+  );
+}
+
+/**
+ * The dialog's media for a project with a video: two pages, image then video,
+ * on a sliding track. Both stay mounted so the video keeps its position when
+ * you page away and back. The video starts when you page to it (the click
+ * that got you there counts as a user gesture, so it can play with sound) and
+ * pauses when you leave. ←/→ also page, except while the video itself has
+ * focus, where the native controls use them to seek.
+ */
+function MediaGallery({ project, video }: { project: Project; video: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [page, setPage] = useState(0);
+  const pages = [
+    { label: "Image", icon: ImageIcon },
+    { label: "Video", icon: Play },
+  ];
+  const last = pages.length - 1;
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) {
+      return;
+    }
+    if (page === 1) {
+      el.play().catch(() => {
+        // Some browsers still refuse sound here; fall back to muted.
+        el.muted = true;
+        el.play().catch(() => undefined);
+      });
+    } else {
+      el.pause();
+    }
+  }, [page]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.target instanceof HTMLVideoElement) {
+        return;
+      }
+      if (event.key === "ArrowRight") {
+        setPage((current) => Math.min(current + 1, last));
+      } else if (event.key === "ArrowLeft") {
+        setPage((current) => Math.max(current - 1, 0));
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [last]);
+
+  return (
+    <div className="media-gallery">
+      <div className="project-modal__media project-modal__media--gallery">
+        <div className="media-gallery__track" style={{ transform: `translateX(-${page * 100}%)` }}>
+          <div className="media-gallery__slide" aria-hidden={page !== 0}>
+            <ProjectMedia project={project} large />
+          </div>
+          <div className="media-gallery__slide media-gallery__slide--video" aria-hidden={page !== 1}>
+            <video
+              ref={videoRef}
+              poster={project.image ? assetPath(project.image) : undefined}
+              controls
+              loop
+              playsInline
+              preload="metadata"
+              tabIndex={page === 1 ? 0 : -1}
+              aria-label={`${project.title} video`}
+            >
+              <VideoSources base={video} />
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <div className="media-gallery__pager" role="group" aria-label="Media">
+        <button
+          type="button"
+          className="media-gallery__arrow"
+          onClick={() => setPage((current) => Math.max(current - 1, 0))}
+          disabled={page === 0}
+          aria-label="Previous"
+        >
+          <ChevronLeft size={17} aria-hidden="true" />
+        </button>
+
+        <div className="media-gallery__tabs">
+          {pages.map(({ label, icon: TabIcon }, index) => (
+            <button
+              key={label}
+              type="button"
+              className={`media-gallery__tab${page === index ? " is-active" : ""}`}
+              onClick={() => setPage(index)}
+              aria-pressed={page === index}
+            >
+              <TabIcon size={13} aria-hidden="true" />
+              {label}
+            </button>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          className="media-gallery__arrow"
+          onClick={() => setPage((current) => Math.min(current + 1, last))}
+          disabled={page === last}
+          aria-label="Next"
+        >
+          <ChevronRight size={17} aria-hidden="true" />
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -121,13 +332,17 @@ function ProjectDialog({ project, onClose }: { project: Project; onClose: () => 
         onClick={(event) => event.stopPropagation()}
       >
         <div className="project-note project-note--media">
-          <div
-            className={`project-modal__media${
-              project.image ? "" : " project-modal__media--empty"
-            }`}
-          >
-            <ProjectMedia project={project} large />
-          </div>
+          {project.video ? (
+            <MediaGallery project={project} video={project.video} />
+          ) : (
+            <div
+              className={`project-modal__media${
+                project.image ? "" : " project-modal__media--empty"
+              }`}
+            >
+              <ProjectMedia project={project} large />
+            </div>
+          )}
         </div>
 
         <div className="project-note project-note--info" ref={dialogRef} tabIndex={-1}>

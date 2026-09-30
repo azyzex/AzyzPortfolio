@@ -11,8 +11,8 @@ import {
   X,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useLayoutEffect, useRef, useState } from "react";
-import { cvDownloads, profile, socialLinks } from "../data/portfolio";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { cv, profile, socialLinks } from "../data/portfolio";
 import { assetPath } from "../utils/assets";
 import { fadeUp, softScale, spring, staggerContainer, viewportOnce } from "../utils/motion";
 
@@ -26,7 +26,6 @@ const viewTransition = { duration: 0.26, ease: easeOut };
 const heightTransition = { duration: 0.34, ease: easeOut };
 
 export function Contact() {
-  const availableCv = cvDownloads.find((cv) => cv.status !== "needs-file" && cv.href);
   const [emailOpen, setEmailOpen] = useState(false);
   const [view, setView] = useState<ModalView>("choice");
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -44,6 +43,31 @@ export function Contact() {
     const observer = new ResizeObserver(update);
     observer.observe(el);
     return () => observer.disconnect();
+  }, [emailOpen]);
+
+  // Same behaviour as the project dialog: Escape closes, and the page behind
+  // stops scrolling (with the scrollbar's width compensated so it doesn't jump).
+  useEffect(() => {
+    if (!emailOpen) {
+      return;
+    }
+    const { overflow, paddingRight } = document.body.style;
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = "hidden";
+    if (scrollbar > 0) {
+      document.body.style.paddingRight = `${scrollbar}px`;
+    }
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setEmailOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = overflow;
+      document.body.style.paddingRight = paddingRight;
+    };
   }, [emailOpen]);
 
   const subject = encodeURIComponent("Portfolio inquiry");
@@ -128,18 +152,16 @@ export function Contact() {
             Email me
             <Mail size={17} aria-hidden="true" />
           </motion.button>
-          {availableCv ? (
-            <motion.a
-              className="button button--ghost"
-              href={assetPath(availableCv.href)}
-              target="_blank"
-              rel="noreferrer"
-              whileHover={{ y: -3 }}
-            >
-              Resume
-              <ExternalLink size={16} aria-hidden="true" />
-            </motion.a>
-          ) : null}
+          <motion.a
+            className="button button--ghost"
+            href={assetPath(cv.href)}
+            target="_blank"
+            rel="noreferrer"
+            whileHover={{ y: -3 }}
+          >
+            Resume
+            <ExternalLink size={16} aria-hidden="true" />
+          </motion.a>
         </motion.div>
 
         <motion.div className="contact-details" variants={staggerContainer}>

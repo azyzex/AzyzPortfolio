@@ -1,6 +1,7 @@
 import { About } from "./components/About";
 import { AllProjects } from "./components/AllProjects";
 import { Contact } from "./components/Contact";
+import { Course } from "./components/Course";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
@@ -25,6 +26,7 @@ export default function App() {
             <About />
             <SkillsTimeline />
             <Projects />
+            <Course />
             <Proof />
             <Contact />
           </>

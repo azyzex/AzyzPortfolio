@@ -1,12 +1,10 @@
 import { ArrowDown, ArrowRight, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
-import { cvDownloads, profile } from "../data/portfolio";
+import { cv, profile } from "../data/portfolio";
 import { assetPath } from "../utils/assets";
 import { fadeUp, softScale, spring, staggerContainer } from "../utils/motion";
 
 export function Hero() {
-  const primaryCv = cvDownloads[0];
-
   return (
     <motion.section
       className="hero"
@@ -45,25 +43,18 @@ export function Hero() {
             <ArrowRight size={17} aria-hidden="true" />
           </motion.a>
 
-          {primaryCv.status === "needs-file" ? (
-            <span className="button button--ghost button--disabled">
-              Resume
-              <ExternalLink size={16} aria-hidden="true" />
-            </span>
-          ) : (
-            <motion.a
-              className="button button--ghost"
-              href={assetPath(primaryCv.href)}
-              target="_blank"
-              rel="noreferrer"
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.98 }}
-              transition={spring}
-            >
-              Resume
-              <ExternalLink size={16} aria-hidden="true" />
-            </motion.a>
-          )}
+          <motion.a
+            className="button button--ghost"
+            href={assetPath(cv.href)}
+            target="_blank"
+            rel="noreferrer"
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.98 }}
+            transition={spring}
+          >
+            Resume
+            <ExternalLink size={16} aria-hidden="true" />
+          </motion.a>
         </motion.div>
       </motion.div>
 

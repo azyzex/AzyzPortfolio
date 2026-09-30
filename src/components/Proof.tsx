@@ -9,6 +9,13 @@ function isImageAsset(path?: string) {
   return Boolean(path && /\.(png|jpe?g|jfif|webp|gif|avif)$/i.test(path));
 }
 
+// The marquee card is at most ~350px wide, so it loads the 720px copy that
+// `npm run optimize:images` writes to certificates/thumbs/. The link still
+// opens the full-size file.
+function certificateThumb(path: string) {
+  return path.replace("assets/certificates/", "assets/certificates/thumbs/");
+}
+
 function CertificateCard({ certificate }: { certificate: (typeof certificates)[number] }) {
   const href = certificate.file ? assetPath(certificate.file) : certificate.credentialUrl;
   const showImage = isImageAsset(certificate.file);
@@ -18,8 +25,9 @@ function CertificateCard({ certificate }: { certificate: (typeof certificates)[n
       {showImage && certificate.file ? (
         <img
           className="certificate-sheet__image"
-          src={assetPath(certificate.file)}
+          src={assetPath(certificateThumb(certificate.file))}
           alt={`${certificate.title} certificate`}
+          decoding="async"
         />
       ) : (
         <div className="certificate-sheet__fallback">

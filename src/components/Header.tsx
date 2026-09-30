@@ -1,13 +1,12 @@
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { cvDownloads, navItems, profile } from "../data/portfolio";
+import { cv, navItems, profile } from "../data/portfolio";
 import { assetPath } from "../utils/assets";
 import { spring } from "../utils/motion";
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const primaryCv = cvDownloads[0];
 
   return (
     <motion.header
@@ -38,18 +37,16 @@ export function Header() {
       </nav>
 
       <div className="header-actions">
-        {primaryCv.href && primaryCv.status !== "needs-file" ? (
-          <motion.a
-            className="resume-link"
-            href={assetPath(primaryCv.href)}
-            target="_blank"
-            rel="noreferrer"
-            whileHover={{ y: -1 }}
-            transition={spring}
-          >
-            Resume
-          </motion.a>
-        ) : null}
+        <motion.a
+          className="resume-link"
+          href={assetPath(cv.href)}
+          target="_blank"
+          rel="noreferrer"
+          whileHover={{ y: -1 }}
+          transition={spring}
+        >
+          Resume
+        </motion.a>
         <motion.button
           className="menu-button"
           type="button"

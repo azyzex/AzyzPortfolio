@@ -6,16 +6,16 @@ Guidance for Claude Code when working in this repository.
 
 Personal portfolio website for **Mohamed Aziz Guenni** ("Aziz") — a Tunisian
 Full-Stack Web & Mobile Developer (Computer Engineering grad, currently doing a
-Professional Master's in Networks Engineering). It is a single-page marketing
-site that presents his bio, skills, projects, experience/education timeline,
-certificates, LinkedIn recommendations, and contact options.
+Professional Master's in Networks Engineering). A single-page marketing site
+(plus a hash-routed project archive) presenting his bio, tech stack, projects,
+certificates, LinkedIn recommendations, contact options, and his Udemy course.
 
 - `package.json` name: `aziz-portfolio` (v1.0.0)
 - Live URL / GitHub Pages base: `https://azyzex.github.io/AzyzPortfolio/`
 - Git remote: `https://github.com/azyzex/AzyzPortfolio.git`
-- This folder (`NewPortfolio`) is a **rewrite** of an older portfolio (vanilla
-  HTML/CSS/Bootstrap/Typed.js). The old one is **not** a portfolio project and
-  must not be listed as one — Aziz is deleting it. Don't re-add it.
+- Deployed by `.github/workflows/deploy.yml` on every push to `main`.
+- This folder is a **rewrite** of an older portfolio (vanilla HTML/Bootstrap).
+  The old one is **not** a portfolio project and must not be listed as one.
 
 ## Stack
 
@@ -24,148 +24,190 @@ certificates, LinkedIn recommendations, and contact options.
 - **lucide-react** for icons
 - **Tailwind CSS 3** is installed but the UI is styled **entirely by hand-written
   CSS** in `src/styles.css` (BEM-ish class names like `.work-piece`,
-  `.collage-id-card`, `.tech-float`). **No Tailwind utility classes are used**; it
-  is kept solely for its base reset (preflight), which the layout depends on (e.g.
-  zeroed `<p>` margins in About). Treat `src/styles.css` as the real stylesheet.
+  `.archive-card__media`, `.course-cover`). **No Tailwind utility classes are
+  used**; it is kept solely for its base reset (preflight), which the layout
+  depends on. Treat `src/styles.css` as the real stylesheet.
+- **sharp** (dev) powers the two asset scripts below.
 - ESLint 9 (flat config) with typescript-eslint + react-hooks + react-refresh
 
 ## Commands
 
 ```bash
-npm run dev      # Vite dev server
-npm run build    # tsc -b && vite build  -> dist/
-npm run preview  # preview the production build
-npm run lint     # eslint .
+npm run dev              # Vite dev server
+npm run build            # tsc -b && vite build  -> dist/
+npm run preview          # serve dist/ (at /AzyzPortfolio/)
+npm run lint             # eslint .
+npm run optimize:images  # convert new PNG/JPG/JFIF under public/assets to WebP
+npm run generate:og      # re-render public/assets/og/og-card.png
 ```
 
-There is no test runner wired up despite `@playwright/test` being a devDependency.
+No test runner is wired up. `@playwright/test` is installed and is handy for
+ad-hoc browser checks against `npm run preview`; its bundled browser is not
+downloaded, so launch with `chromium.launch({ channel: "chrome" })`.
 
 ## Architecture
 
 Entry: `index.html` -> `src/main.tsx` -> `src/App.tsx`.
 
-`App.tsx` is a flat composition of section components, in render order:
+`App.tsx` switches between two views with a tiny hash router
+(`src/utils/router.ts`): `#/projects` is a route (leading slash), anything else
+(`#about`, `#contact`…) is a normal in-page anchor on the home view.
 
 ```
 <Header />
 <main>
-  <Hero />            #top
-  <About />           #about
-  <SkillsTimeline />  #skills (+ #experience timeline, same component)
-  <Projects />        #projects
-  <Proof />           #certificates (certs + recommendations)
-  <Contact />         #contact
+  home (#/ or any anchor):          archive (#/projects):
+    <Hero />        #top              <AllProjects />
+    <About />       #about
+    <SkillsTimeline /> #skills
+    <Projects />    #projects
+    <Course />      #course
+    <Proof />       #certificates
+    <Contact />     #contact
 </main>
 <Footer />
 ```
 
 ### Single source of truth: `src/data/portfolio.ts`
 
-**This is the most important file in the repo.** Almost all content lives here as
-typed exports — components are mostly presentational and map over this data. To
-change site content, edit this file, not the components. Key exports:
+**The most important file in the repo.** Almost all content lives here as typed
+exports; components are presentational and map over it. To change site
+content, edit this file, not the components. Key exports:
 
-- `profile` — name, title, location, email, phone, bio, photo path, availability
-- `navItems` — header navigation (single source of truth; `Header.tsx` imports
-  it), plus `focusAreas`, `services`
-- `skillGroups` — categorized skills (Frontend / Mobile / Backend / AI / IoT /
-  Tools / Languages). `techItems` — the flat tech-stack list rendered by the
-  Skills marquee (logos via devicon CDN, per-item `accent` color)
-- `projects: Project[]` — 10 projects; `featured: true` ones surface in the
-  Projects section (it shows the first 4 featured). Each has `links` with a
-  `status` of `available` | `coming-soon` | `needs-file`, plus an `assetHint`
-  pointing to where a screenshot should go.
-- `experience` / `education` (`TimelineItem[]`) — combined and sliced to 5 in the
-  Skills/path timeline
-- `certificates: Certificate[]` — 25 entries, each pointing to a file in
-  `public/assets/certificates/`
-- `recommendations: Recommendation[]` — 5 LinkedIn recommendations with avatars
-- `socialLinks`, `cvDownloads`, `proofStats`, `manualAssetChecklist`
+- `profile` — name, title, location, email, phone, bio, photo, availability.
+  `profile.email` (`azizguenni0@gmail.com`) is correct — don't "fix" it.
+- `navItems` — header navigation (Header imports it).
+- `techItems` — the flat tech list in the Skills marquee (devicon CDN logos,
+  per-item `accent` colour).
+- `projects: Project[]` — 16 projects, newest first. All have a 16:10 WebP
+  `image`. `featured: true` ones surface on the home page (**only the first 4
+  featured** are shown). Optional `video` — see "Project videos" below.
+- `certificates` (27), `recommendations` (6), `socialLinks`.
+- `cv` — a single `LinkItem`. The one PDF contains both the English and the
+  French CV, so there is one download everywhere (Header, Hero, Contact).
+- `course` — the Udemy course shown in the `Course` section.
+- `experience` / `education` (`TimelineItem[]`), `skillGroups`, `services`,
+  `focusAreas` — exported but **not currently rendered** (kept for a future
+  timeline / services section). There is no experience timeline on the site.
 
-Types (`LinkItem`, `Project`, `TimelineItem`, `Certificate`, `Recommendation`)
-are defined at the top of the same file.
+Types (`LinkItem`, `Project`, `TimelineItem`, `Certificate`, `Recommendation`,
+`TechItem`) are defined in the same file.
 
 ### Components (`src/components/`)
 
-- `Header.tsx` — sticky pill nav (Work/About/Skills/Proof/Contact); mobile
-  hamburger toggles `.nav--open`. Imports `navItems` from `portfolio.ts`.
-- `Hero.tsx` — big "Hi, I'm [photo] Aziz." headline with the profile photo
-  inlined as a word, plus View work / Resume CTAs.
-- `About.tsx` — bio copy + the "about board": a structured CSS-grid composition
-  (torn Design/Build/Ship strip → 3 tilted cards: ID badge / terminal `whoami` /
-  signed yellow note → folder chips row → stats row with dashed teal divider).
-  Cards straighten on hover (`whileHover={{ y: -6, rotate: 0 }}`). It was
-  previously an absolutely-positioned collage that overlapped at many widths —
-  do not reintroduce absolute positioning here.
-- `SkillsTimeline.tsx` — renders **two** sections: an animated marquee
-  "tech cloud" (the `techItems` list imported from `portfolio.ts`, devicon CDN
-  SVGs, distinct from `skillGroups`) and the experience/education timeline.
-- `Projects.tsx` — featured projects as alternating large-media "work pieces".
-  When a project has no `image`, it shows an honest placeholder artboard with the
-  `assetHint` path. (No project currently has a screenshot — see Assets.)
-- `Proof.tsx` — two infinite horizontal marquees: certificates and
-  recommendations. Animation durations are computed from item counts ×
-  per-card travel constants (`certificateTravelPx` / `recommendationTravelPx`)
-  to hold a constant px/s speed — **if card widths change in CSS, update the
-  matching travel constant** or the marquee speed visibly changes.
-- `Contact.tsx` — contact details + an "Email me" modal. The modal opens on a
-  chooser (a primary **Write a message** option plus Gmail/Outlook compose
-  links) and **morphs** into a contact form. The morph tweens the card's
-  measured content height (`ResizeObserver` → animated `.email-modal__viewport`
-  height) while `AnimatePresence mode="popLayout"` crossfades the views — do
-  NOT use framer's `layout` prop here, it scale-distorts the children. The
-  viewport clips overflow with padding/negative-margin compensation so button
-  shadows aren't cut off; the paper tilt lives on the `.email-modal-tilt`
-  wrapper. The form POSTs to
-  `VITE_FORMSPREE_ENDPOINT` (Formspree); when that env var is unset it falls back
-  to a `mailto:` compose so it still works.
+- `Header.tsx` — sticky pill nav + Resume link; mobile hamburger toggles
+  `.nav--open`.
+- `Hero.tsx` — "Hi, I'm Aziz." headline, role, intro, View work / Resume.
+- `About.tsx` — bio copy beside a tilted polaroid photo with a
+  "currently doing master's" sticky note.
+- `SkillsTimeline.tsx` — despite the name, renders only the 5-row tech marquee
+  (`techItems`). The timeline it once had was removed.
+- `Projects.tsx` — first 4 featured projects as alternating large "work
+  pieces", then a "See all N projects" button to `#/projects`.
+- `AllProjects.tsx` — the archive: a grid of every project as cards, each
+  opening a two-note detail dialog (Escape/backdrop closes, body scroll locked,
+  focus restored). The grid is flex-wrap + `justify-content: center`, so an
+  incomplete last row is always centred; `--archive-cols` (3/2/1 at >1060 /
+  ≤1060 / ≤700px) sets the card width. Cards with a `video` play it on hover, and their dialog
+  pages between image and video (see below).
+- `Proof.tsx` — two infinite marquees: certificates and recommendations.
+  Durations are computed from item count × per-card travel constants
+  (`certificateTravelPx` / `recommendationTravelPx`) to hold a constant px/s —
+  **if card widths change in CSS, update the matching constant**. Certificate
+  cards load the small copy from `certificates/thumbs/`; the link opens the
+  full-size file.
+- `Contact.tsx` — contact details + "Email me" modal. The modal opens on a
+  chooser (Write a message / Gmail / Outlook) and **morphs** into a form by
+  tweening the measured content height (`ResizeObserver` → animated
+  `.email-modal__viewport` height) while `AnimatePresence mode="popLayout"`
+  crossfades — do NOT use framer's `layout` prop here, it scale-distorts the
+  children. Escape closes it and page scroll is locked while open. The form
+  POSTs to `VITE_FORMSPREE_ENDPOINT`; unset, it falls back to `mailto:`.
+- `Course.tsx` — sits between Projects and Proof: tilted, taped course cover + copy +
+  topic chips + "Check out the course" button, from `course` in portfolio.ts.
 - `Footer.tsx`, `SectionHeader.tsx` — small presentational helpers.
+
+### Project videos (hover-to-play)
+
+`Project.video` is a path **without extension**; both `<path>.webm` (VP9) and
+`<path>.mp4` (H.264) must exist. WebM is listed first because some systems —
+notably Windows "N" editions, which Aziz's machine is — cannot decode H.264 at
+all; the MP4 covers older Safari. On archive cards the `image` stays as the
+poster and the clip fades in once it is actually playing; nothing is fetched
+until the first hover (`preload="none"`, sources attached on demand). Hover
+playback is deliberately **not** gated on `prefers-reduced-motion` — it only
+starts because the visitor pointed at the card, and Aziz's own Windows has
+animations turned off (which browsers report as reduce-motion). Touch devices
+get a "Video inside" badge instead. In the detail dialog, a project with a
+video gets `MediaGallery`: two pages (Image, then Video) on a sliding track
+with arrows + Image/Video tabs + ←/→ keys; the video plays (with sound) when
+paged to and pauses when paged away.
+
+Check frame 0 first: exported promo videos often carry a title-card "poster"
+as their very first frame, which flashes on hover (and on every loop). The
+Rehearsal source did; it's dropped with `trim=start_frame=1` in the `-vf` chain
+(plus `-af "atrim=start=0.0334,asetpts=PTS-STARTPTS"` at 30fps).
+
+The hover reveal (fade + blur-to-sharp + slight zoom) is exempted from the
+global reduced-motion rule for opacity/filter only — see the end of styles.css.
+
+Recipe (keep clips short; ~2–3 MB each at 1280px):
+
+```bash
+ffmpeg -i in.mp4 -vf scale=1280:-2 -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p \
+  -c:a aac -b:a 96k -movflags +faststart <slug>-preview.mp4
+ffmpeg -i in.mp4 -vf scale=1280:-2 -c:v libvpx-vp9 -b:v 0 -crf 36 -row-mt 1 \
+  -c:a libopus -b:a 80k <slug>-preview.webm
+```
 
 ### Utilities (`src/utils/`)
 
-- `assets.ts` — `assetPath(path)` prefixes asset paths with Vite's `BASE_URL`
-  (`/AzyzPortfolio/`) so they resolve correctly under the GitHub Pages subpath.
-  **Always route public-asset URLs through `assetPath()`**; passing through
-  external URLs and `mailto:`/`tel:` is handled. Leading slashes are stripped.
+- `assets.ts` — `assetPath(path)` prefixes Vite's `BASE_URL` (`/AzyzPortfolio/`).
+  **Always route public-asset URLs through `assetPath()`**; external URLs and
+  `mailto:`/`tel:` pass through. Leading slashes are stripped.
 - `motion.ts` — shared framer-motion variants: `spring`, `fadeUp`, `softScale`,
-  `staggerContainer`, and `viewportOnce` (reveal once on scroll). Reuse these
-  instead of inlining transitions.
+  `staggerContainer`, `viewportOnce`. Reuse these instead of inlining.
+- `router.ts` — the two-view hash router and post-navigation scroll fix.
+
+Note: framer writes an inline `transform` on anything it animates, which
+overrides a CSS `transform: rotate(...)`. For a tilted motion element, put the
+tilt in framer (`style={{ rotate: -2.2 }}`), not in CSS (see `Course.tsx`).
 
 ## Assets (`public/assets/`)
 
-Copied verbatim into `dist/` on build. Current state:
+Copied verbatim into `dist/`. **Everything raster is WebP** (except the OG
+card, which stays PNG because some link-preview crawlers don't read WebP).
 
-- `profile/1770583574950.jfif` — profile photo ✓ present
-- `cv/cv guenni mohamed aziz.pdf` — English CV ✓ present (French CV is
-  `needs-file`, intentionally missing)
-- `certificates/` — 25 cert images ✓ present (match the 25 data entries)
-- `recommendations/<person>/*.png` — 5 avatars ✓ present
-- `projects/<slug>/` — **only README placeholders; no real screenshots.** Every
-  project therefore renders the placeholder artboard by design. Adding an
-  `image` to a project entry + the file here replaces the artboard.
+- `profile/aziz.webp` — profile photo (also used by the OG script)
+- `cv/cv guenni mohamed aziz.pdf` — CV, English + French in one file
+- `certificates/<slug>.webp` (full, ≤1800px) + `certificates/thumbs/<slug>.webp`
+  (720px, used by the marquee)
+- `recommendations/<person>/avatar.webp` (192px square). `bedis-bensaid/` also
+  holds two unused ESAT logos.
+- `projects/<slug>/<slug>-hero.webp` — 16:10 thumbnails, plus
+  `rehearsal-preview.{webm,mp4}`
+- `course/sftp-course.webp`, `og/og-card.png`
 
-`manualAssetChecklist` in `portfolio.ts` tracks remaining manual asset TODOs.
+To add an image: drop the PNG/JPG into the right folder, run
+`npm run optimize:images` (converts to WebP with per-folder sizing, makes
+certificate thumbs, deletes the original, prints the new path), then reference
+the `.webp` in `portfolio.ts`.
 
-To enable real contact-form delivery, create a `.env` with
-`VITE_FORMSPREE_ENDPOINT=https://formspree.io/f/<id>` (see `.env.example`).
-Without it the form falls back to opening the visitor's mail client.
+Git-ignored local staging folders (never shipped): `_intake/`, `thumbnails/`.
 
 ## Conventions & gotchas
 
-- Content changes go in `src/data/portfolio.ts`; styling goes in
-  `src/styles.css`. Components rarely need editing for content/style tweaks.
-- `navItems` (header) and `techItems` (skills marquee) both live in
-  `portfolio.ts` and are imported by their components. `skillGroups`, `services`,
-  `utilityIcons`, and `manualAssetChecklist` are currently exported but not
-  rendered (kept for future sections / as scaffolding).
-- `vite.config.ts` derives `base` from `package.json` `homepage` (it strips the
-  scheme + host). To move the site (rename repo, custom domain, user-root Pages),
-  change **only** `homepage` — `base` follows automatically. Assets resolve via
-  `assetPath()` using this base.
-- Responsive CSS breakpoints: 1060px, 820px (mobile nav + collage stacking),
-  560px. `prefers-reduced-motion` is respected.
+- Content changes go in `src/data/portfolio.ts`; styling in `src/styles.css`.
+- `vite.config.ts` derives `base` from `package.json` `homepage`, and fills
+  `%SITE_URL%` in `index.html` (OG/Twitter tags). To move the site, change
+  **only** `homepage`.
+- Responsive CSS breakpoints: 1060px, 820px (mobile nav, stacked layouts),
+  560px. `prefers-reduced-motion` is respected; `(hover: none)` swaps the
+  archive video badge text.
+- Several source files use CRLF line endings and some use LF — preserve each
+  file's own.
 - Design language: light "paper" theme, teal (`--teal #0699a8`) + warm yellow
-  accents, serif (Georgia) italic flourishes via `--serif`, monospace terminal
-  accents via `--mono`, dotted-grid background, tactile decoration (tilted
-  cards, sticky notes, torn paper) — but laid out with grid/flex, never
-  free-floating absolute positioning.
+  accents, serif (Georgia) italic flourishes via `--serif`, monospace accents
+  via `--mono`, dotted-grid background, tactile decoration (tilted cards,
+  sticky notes, tape strips) — laid out with grid/flex, never free-floating
+  absolute positioning.

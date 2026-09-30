@@ -36,7 +36,12 @@ function WorkPiece({ project, index }: { project: Project; index: number }) {
     >
       <motion.div className="work-media" variants={softScale} whileHover={{ y: -8, rotate: index % 2 ? -0.6 : 0.6 }}>
         {project.image ? (
-          <img src={assetPath(project.image)} alt={`${project.title} screenshot`} />
+          <img
+            src={assetPath(project.image)}
+            alt={`${project.title} screenshot`}
+            loading="lazy"
+            decoding="async"
+          />
         ) : (
           <div className="work-placeholder">
             <Icon size={42} aria-hidden="true" />
