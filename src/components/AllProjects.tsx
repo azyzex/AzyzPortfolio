@@ -8,7 +8,7 @@ import {
   X,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { projects, type Project } from "../data/portfolio";
 import { assetPath } from "../utils/assets";
 import { fadeUp, softScale, spring, staggerContainer } from "../utils/motion";
@@ -130,16 +130,7 @@ function ArchiveCard({ project, onOpen }: { project: Project; onOpen: () => void
     >
       <span className="archive-card__media">
         <ProjectMedia project={project} />
-        {project.video ? (
-          <>
-            <CardVideo src={project.video} active={hovered} />
-            <span className={`archive-card__badge${hovered ? " is-hidden" : ""}`} aria-hidden="true">
-              <Play size={11} fill="currentColor" />
-              <span className="archive-card__badge-hover">Hover to play</span>
-              <span className="archive-card__badge-touch">Video inside</span>
-            </span>
-          </>
-        ) : null}
+        {project.video ? <CardVideo src={project.video} active={hovered} /> : null}
       </span>
 
       <span className="archive-card__body">
@@ -167,35 +158,48 @@ function ArchiveCard({ project, onOpen }: { project: Project; onOpen: () => void
 /**
  * The dialog's media for a project with a video: two pages, image then video,
  * on a sliding track. Both stay mounted so the video keeps its position when
- * you page away and back. The video starts when you page to it (the click
- * that got you there counts as a user gesture, so it can play with sound) and
- * pauses when you leave. ←/→ also page, except while the video itself has
- * focus, where the native controls use them to seek.
+ * you page away and back. The video plays WITH sound when you page to it and
+ * pauses when you leave — only the archive card's hover preview is muted.
+ * play() is called synchronously inside the click/keypress handler: that is
+ * the one moment every browser (including embedded ones like VS Code's) is
+ * guaranteed to allow audio. Calling it later from an effect can be refused.
+ * ←/→ also page, except while the video itself has focus, where the native
+ * controls use them to seek.
  */
 function MediaGallery({ project, video }: { project: Project; video: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [page, setPage] = useState(0);
+  const pageRef = useRef(0);
   const pages = [
     { label: "Image", icon: ImageIcon },
     { label: "Video", icon: Play },
   ];
   const last = pages.length - 1;
 
-  useEffect(() => {
+  // Must be called from a user-gesture handler (click / keydown).
+  const goTo = (next: number) => {
+    const target = Math.max(0, Math.min(next, last));
+    pageRef.current = target;
+    setPage(target);
     const el = videoRef.current;
     if (!el) {
       return;
     }
-    if (page === 1) {
-      el.play().catch(() => {
-        // Some browsers still refuse sound here; fall back to muted.
-        el.muted = true;
-        el.play().catch(() => undefined);
-      });
+    if (target === 1) {
+      el.muted = false;
+      el.play().catch(() => undefined);
     } else {
       el.pause();
     }
-  }, [page]);
+  };
+  const goToRef = useRef(goTo);
+  goToRef.current = goTo;
+
+  // Safety net: never leave audio running once the gallery is gone.
+  useEffect(() => {
+    const el = videoRef.current;
+    return () => el?.pause();
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -203,14 +207,14 @@ function MediaGallery({ project, video }: { project: Project; video: string }) {
         return;
       }
       if (event.key === "ArrowRight") {
-        setPage((current) => Math.min(current + 1, last));
+        goToRef.current(pageRef.current + 1);
       } else if (event.key === "ArrowLeft") {
-        setPage((current) => Math.max(current - 1, 0));
+        goToRef.current(pageRef.current - 1);
       }
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [last]);
+  }, []);
 
   return (
     <div className="media-gallery">
@@ -240,7 +244,7 @@ function MediaGallery({ project, video }: { project: Project; video: string }) {
         <button
           type="button"
           className="media-gallery__arrow"
-          onClick={() => setPage((current) => Math.max(current - 1, 0))}
+          onClick={() => goTo(page - 1)}
           disabled={page === 0}
           aria-label="Previous"
         >
@@ -253,7 +257,7 @@ function MediaGallery({ project, video }: { project: Project; video: string }) {
               key={label}
               type="button"
               className={`media-gallery__tab${page === index ? " is-active" : ""}`}
-              onClick={() => setPage(index)}
+              onClick={() => goTo(index)}
               aria-pressed={page === index}
             >
               <TabIcon size={13} aria-hidden="true" />
@@ -265,7 +269,7 @@ function MediaGallery({ project, video }: { project: Project; video: string }) {
         <button
           type="button"
           className="media-gallery__arrow"
-          onClick={() => setPage((current) => Math.min(current + 1, last))}
+          onClick={() => goTo(page + 1)}
           disabled={page === last}
           aria-label="Next"
         >
@@ -411,6 +415,16 @@ export function AllProjects() {
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   const active = projects.find((project) => project.slug === openSlug) ?? null;
 
+  // The dialog stays mounted while its exit animation plays, so silence any
+  // video the instant it is dismissed rather than when it finally unmounts.
+  // Every way out (Escape, backdrop, × button) comes through here.
+  const closeDialog = useCallback(() => {
+    document.querySelectorAll<HTMLVideoElement>(".project-modal-backdrop video").forEach((video) => {
+      video.pause();
+    });
+    setOpenSlug(null);
+  }, []);
+
   return (
     <motion.section
       className="section archive-section"
@@ -458,7 +472,7 @@ export function AllProjects() {
           <ProjectDialog
             key={active.slug}
             project={active}
-            onClose={() => setOpenSlug(null)}
+            onClose={closeDialog}
           />
         ) : null}
       </AnimatePresence>

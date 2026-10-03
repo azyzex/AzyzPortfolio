@@ -18,14 +18,16 @@ function certificateThumb(path: string) {
 
 function CertificateCard({ certificate }: { certificate: (typeof certificates)[number] }) {
   const href = certificate.file ? assetPath(certificate.file) : certificate.credentialUrl;
-  const showImage = isImageAsset(certificate.file);
+  // An explicit preview wins (used when `file` is a PDF); otherwise the file
+  // itself is the picture when it is an image.
+  const preview = certificate.image ?? (isImageAsset(certificate.file) ? certificate.file : undefined);
 
   const content = (
     <>
-      {showImage && certificate.file ? (
+      {preview ? (
         <img
           className="certificate-sheet__image"
-          src={assetPath(certificateThumb(certificate.file))}
+          src={assetPath(certificateThumb(preview))}
           alt={`${certificate.title} certificate`}
           decoding="async"
         />

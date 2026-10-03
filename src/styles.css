@@ -1712,47 +1712,6 @@ img {
   transform: none;
 }
 
-.archive-card__badge {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 11px 6px 9px;
-  color: var(--ink);
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(20, 28, 34, 0.08);
-  border-radius: 999px;
-  box-shadow: 0 8px 18px rgba(27, 43, 50, 0.14);
-  font-size: 0.68rem;
-  font-weight: 850;
-  letter-spacing: 0.02em;
-  transition: opacity 200ms ease, transform 200ms ease;
-}
-
-.archive-card__badge svg {
-  color: var(--teal);
-}
-
-.archive-card__badge.is-hidden {
-  opacity: 0;
-  transform: translateY(4px);
-}
-
-.archive-card__badge-touch {
-  display: none;
-}
-
-@media (hover: none) {
-  .archive-card__badge-hover {
-    display: none;
-  }
-
-  .archive-card__badge-touch {
-    display: inline;
-  }
-}
 
 /* ---------- dialog media gallery (image <-> video) -------------------- */
 

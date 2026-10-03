@@ -24,6 +24,7 @@ import {
   RadioTower,
   ShieldCheck,
   Smartphone,
+  Zap,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -71,6 +72,9 @@ export type Certificate = {
   issuer: string;
   date: string;
   file?: string;
+  // Card preview for when `file` is not an image (e.g. a multi-page PDF). The
+  // marquee shows this; clicking the card still opens `file`.
+  image?: string;
   credentialUrl?: string;
   status: "needs-file" | "verified";
 };
@@ -388,11 +392,32 @@ export const projects: Project[] = [
     ],
     links: [
       { label: "GitHub", href: "https://github.com/azyzex/Rehearsal", status: "available" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_vscode-postgresql-databases-ugcPost-7510322297979944960-W8Iv", status: "available" },
     ],
     image: "assets/projects/rehearsal/rehearsal-hero.webp",
     video: "assets/projects/rehearsal/rehearsal-preview",
     icon: DatabaseZap,
     assetHint: "public/assets/projects/rehearsal/",
+  },
+  {
+    slug: "faultix",
+    title: "Faultix",
+    date: "Aug 2026",
+    category: "Developer tooling · VS Code extension",
+    summary:
+      "A local-first VS Code extension that remembers every failure in a project and what fixed it — and lets your coding agent ask.",
+    details:
+      "When a build, test or script fails, Faultix strips the terminal noise, redacts secrets, works out the root cause, pulls in the code around it and writes a brief you can hand straight to an agent. It also records the runs that succeed, so it can tell you that this failure has happened three times, that you fixed it last time by editing one file, and that a test passed and failed at the same commit — flaky, not broken. An agent starts every session cold, so Faultix exposes that history over the Model Context Protocol and the agent asks. Root-cause extraction is verified against 18 toolchains, from TypeScript and pytest to Rust, Go and MSBuild. Everything runs locally: no network calls, no telemetry.",
+    role:
+      "Designed and built it alone: the capture pipeline (sanitize, redact, classify, extract, rank, fingerprint), the run ledger and fix correlation, flaky detection, the read-only MCP server and the VS Code integration.",
+    tech: ["TypeScript", "VS Code API", "Model Context Protocol", "Node.js", "GitHub Actions"],
+    links: [
+      { label: "GitHub", href: "https://github.com/azyzex/faultix", status: "available" },
+    ],
+    image: "assets/projects/faultix/faultix-hero.webp",
+    video: "assets/projects/faultix/faultix-preview",
+    icon: Zap,
+    assetHint: "public/assets/projects/faultix/",
   },
   {
     slug: "earshot",
@@ -420,6 +445,7 @@ export const projects: Project[] = [
       { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_i-have-upgraded-claudesounds-version-071-activity-7492746352804704256-EK8C", status: "available" },
     ],
     image: "assets/projects/earshot/earshot-hero.webp",
+    video: "assets/projects/earshot/earshot-preview",
     icon: BellRing,
     assetHint: "public/assets/projects/earshot/",
   },
@@ -439,6 +465,7 @@ export const projects: Project[] = [
       { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_webdevelopment-nodejs-react-activity-7493001749671190528-qLE2", status: "available" },
     ],
     image: "assets/projects/the-roof/the-roof-hero.webp",
+    video: "assets/projects/the-roof/the-roof-preview",
     icon: Gamepad2,
     assetHint: "public/assets/projects/the-roof/",
   },
@@ -466,6 +493,7 @@ export const projects: Project[] = [
       { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_a-project-that-never-made-it-to-launch-pitchup-share-7494718735862304768-MrZe", status: "available" },
     ],
     image: "assets/projects/pitchup/pitchup-hero.webp",
+    video: "assets/projects/pitchup/pitchup-preview",
     icon: Presentation,
     assetHint: "public/assets/projects/pitchup/",
   },
@@ -485,6 +513,7 @@ export const projects: Project[] = [
       { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_gdg-website-of-techfest-2026-ugcPost-7494722371380244480-JV_Q", status: "available" },
     ],
     image: "assets/projects/gdg-techfest/gdg-techfest-hero.webp",
+    video: "assets/projects/gdg-techfest/gdg-techfest-preview",
     icon: CalendarDays,
     assetHint: "public/assets/projects/gdg-techfest/",
   },
@@ -516,6 +545,7 @@ export const projects: Project[] = [
     ],
     featured: true,
     image: "assets/projects/printedfeeling/printedfeeling-hero.webp",
+    video: "assets/projects/printedfeeling/printedfeeling-preview",
     icon: Printer,
     assetHint: "public/assets/projects/printedfeeling/",
   },
@@ -537,6 +567,7 @@ export const projects: Project[] = [
     ],
     featured: true,
     image: "assets/projects/promptprotect/promptprotect-hero.webp",
+    video: "assets/projects/promptprotect/promptprotect-preview",
     icon: ShieldCheck,
     assetHint: "public/assets/projects/promptprotect/",
   },
@@ -569,29 +600,30 @@ export const projects: Project[] = [
     ],
     featured: true,
     image: "assets/projects/qnow/qnow-hero.webp",
+    video: "assets/projects/qnow/qnow-preview",
     icon: MonitorSmartphone,
     assetHint: "public/assets/projects/qnow/",
   },
   {
     slug: "tuniai",
-    title: "TuniAI",
-    date: "2025",
+    title: "TunIA",
+    date: "Aug 2025 - Jun 2026",
     category: "AI / full-stack web app",
     summary:
       "A Darija-first AI chat and document assistant designed to make AI feel more local and accessible for Tunisian users.",
     details:
-      "TuniAI supports AI chat, file and image uploads, contextual answers, quiz generation, exports, markdown and math rendering, and responsive desktop/mobile UI.",
+      "TunIA supports AI chat, file and image uploads, contextual answers, quiz generation, exports, markdown and math rendering, and responsive desktop/mobile UI.",
     role:
-      "Built as a full-stack AI application, handling frontend, AI workflows, uploads, chat behavior, exports, responsive UI, and backend/server logic.",
+      "Built the whole app: the React frontend, Cloudflare Pages Functions for chat, auth and conversations, self-hosted JWT auth, the Neon Postgres schema, Gemini prompting with multi-key fallback, the interactive quiz engine, and Arabic-safe exports.",
     tech: [
       "React",
       "Vite",
-      "Tailwind CSS",
-      "Node.js",
+      "Bootstrap",
+      "Cloudflare Pages Functions",
+      "Neon Postgres",
       "Gemini API",
-      "Puppeteer",
-      "Markdown",
-      "Math Rendering",
+      "Node.js",
+      "KaTeX",
     ],
     links: [
       { label: "Live", href: "https://tunia.pages.dev", status: "available" },
@@ -599,6 +631,7 @@ export const projects: Project[] = [
     ],
     featured: true,
     image: "assets/projects/tuniai/tuniai-hero.webp",
+    video: "assets/projects/tuniai/tuniai-preview",
     icon: Bot,
     assetHint: "public/assets/projects/tuniai/",
   },
@@ -618,27 +651,29 @@ export const projects: Project[] = [
       { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_im-happy-to-share-this-mobile-application-activity-7242179650620141569-Esvz", status: "available" },
     ],
     image: "assets/projects/megatel/megatel-hero.webp",
+    video: "assets/projects/megatel/megatel-preview",
     icon: Smartphone,
     assetHint: "public/assets/projects/megatel/",
   },
   {
     slug: "ttvc",
     title: "TTVC - Text To Voice Chat",
-    date: "Oct 2024 - Dec 2024",
+    date: "Oct 2024 - Aug 2026",
     category: "Accessibility / desktop app",
     summary:
-      "A Windows text-to-speech tool that converts typed messages into natural voice output for communication apps.",
+      "A Windows app that speaks what you type into Discord, Teams or any voice chat, through a virtual microphone — with a natural neural voice that runs entirely offline.",
     details:
-      "TTVC supports Google text-to-speech, virtual microphone routing, a simple GUI, and packaged installation so users with speech difficulties can communicate in voice environments.",
+      "Built for a friend whose microphone broke. Version 2 is a full rebuild: speech is generated locally by the Piper neural TTS engine (no account, no API key, no network), sent out through a bundled VB-CABLE virtual microphone, and can be mixed with your real microphone so voice apps only ever need one input. A global shortcut brings it up from inside a game, more voices in many languages download from Settings, and if the neural engine cannot start it falls back to the Windows voice and says why.",
     role:
-      "Developed the app, GUI, text-to-speech integration, audio routing workflow, dependency bundling, and Windows packaging.",
-    tech: ["Python", "Tkinter", "gTTS", "Virtual Audio Cable", "Inno Setup"],
+      "Designed and built it alone: the CustomTkinter UI, the Piper and SAPI speech engines, audio routing and microphone passthrough over PortAudio, the global hotkey, unit and UI tests, and a one-click Inno Setup installer that sets up the virtual cable.",
+    tech: ["Python", "CustomTkinter", "Piper TTS", "ONNX Runtime", "VB-CABLE", "PortAudio", "Inno Setup"],
     links: [
       { label: "GitHub", href: "https://github.com/azyzex/TTVC", status: "available" },
       { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_accessibility-opensource-python-activity-7493075999623098370-eUUu", status: "available" },
     ],
     featured: true,
     image: "assets/projects/ttvc/ttvc-hero.webp",
+    video: "assets/projects/ttvc/ttvc-preview",
     icon: Mic2,
     assetHint: "public/assets/projects/ttvc/",
   },
@@ -661,6 +696,7 @@ export const projects: Project[] = [
     ],
     featured: true,
     image: "assets/projects/secure-file-transfer/secure-file-transfer-hero.webp",
+    video: "assets/projects/secure-file-transfer/secure-file-transfer-preview",
     icon: FileText,
     assetHint: "public/assets/projects/secure-file-transfer/",
   },
@@ -689,6 +725,7 @@ export const projects: Project[] = [
       { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_rfid-smart-lock-system-presentation-activity-7274871227628896256-7y19", status: "available" },
     ],
     image: "assets/projects/rfid-smart-lock/rfid-smart-lock-hero.webp",
+    video: "assets/projects/rfid-smart-lock/rfid-smart-lock-preview",
     icon: RadioTower,
     assetHint: "public/assets/projects/rfid-smart-lock/",
   },
@@ -708,6 +745,7 @@ export const projects: Project[] = [
       { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_rapport-activity-7276644683580116992-qv3X", status: "available" },
     ],
     image: "assets/projects/ai-gatekeeper/ai-gatekeeper-hero.webp",
+    video: "assets/projects/ai-gatekeeper/ai-gatekeeper-preview",
     icon: Bot,
     assetHint: "public/assets/projects/ai-gatekeeper/",
   },
@@ -727,6 +765,7 @@ export const projects: Project[] = [
       { label: "GitHub", href: "https://github.com/azyzex/Peak_physique", status: "available" },
     ],
     image: "assets/projects/peakphysique/peakphysique-hero.webp",
+    video: "assets/projects/peakphysique/peakphysique-preview",
     icon: HeartPulse,
     assetHint: "public/assets/projects/peakphysique/",
   },
@@ -746,6 +785,7 @@ export const projects: Project[] = [
       { label: "LinkedIn", href: "https://www.linkedin.com/posts/mohamed-aziz-guenni_lora-project-presentation-activity-7276640723691573248-AKYk", status: "available" },
     ],
     image: "assets/projects/lora-monitoring/lora-monitoring-hero.webp",
+    video: "assets/projects/lora-monitoring/lora-monitoring-preview",
     icon: RadioTower,
     assetHint: "public/assets/projects/lora-monitoring/",
   },
@@ -833,6 +873,13 @@ export const education: TimelineItem[] = [
 
 export const certificates: Certificate[] = [
   {
+    title: "Adaptive Leadership",
+    issuer: "Acumen Academy",
+    date: "Aug 2026",
+    file: "assets/certificates/acumen-adaptive-leadership.webp",
+    status: "verified",
+  },
+  {
     title: "AEO Fundamentals",
     issuer: "HubSpot Academy",
     date: "Aug 2026 - valid to Sep 2028",
@@ -844,6 +891,16 @@ export const certificates: Certificate[] = [
     issuer: "Semrush Academy",
     date: "Aug 2026",
     file: "assets/certificates/seo-certificate.webp",
+    status: "verified",
+  },
+  {
+    // One card for all 20 Anthropic Academy courses (Claude Code, MCP, the
+    // API, agent skills, AI Fluency…); the PDF holds every certificate.
+    title: "20 Anthropic Academy courses",
+    issuer: "Anthropic",
+    date: "Jul 2026",
+    file: "assets/certificates/anthropic-academy-certificates.pdf",
+    image: "assets/certificates/anthropic-academy-certificates.webp",
     status: "verified",
   },
   {
@@ -1028,6 +1085,16 @@ export const linkedInRecommendationsUrl =
 
 export const recommendations: Recommendation[] = [
   {
+    name: "Bedis Bensaid",
+    role: "Data Scientist | Machine Learning appliqué à la cybersécurité | Analyste SOC (N1) · Ingénierie de détection · Python · MLSecOps | Étudiant en Master Data Science",
+    quote:
+      "I had the pleasure of collaborating with Aziz on several projects, where I had the opportunity to appreciate his strong technical skills, dedication, and problem-solving mindset. Aziz consistently demonstrates a great ability to analyze challenges, learn quickly, and find effective solutions. He brings creativity, professionalism, and a positive attitude to every collaboration. Beyond his technical abilities, Aziz is a reliable and proactive teammate who communicates clearly and contributes valuable ideas during discussions and project development. His commitment and willingness to improve make him a great professional to work with. I highly recommend Aziz to anyone looking for a skilled, motivated, and dependable collaborator. I look forward to seeing his future achievements and hopefully working together again.",
+    source: "LinkedIn",
+    date: "Jun 26, 2026",
+    image: "assets/recommendations/bedis-bensaid/avatar.webp",
+    profileUrl: linkedInRecommendationsUrl,
+  },
+  {
     name: "Anis Dakhloui",
     role: "Full Stack Engineer | AI Enthusiast | IT Consultant | Multilingual (EN/FR/AR)",
     quote:
@@ -1075,15 +1142,6 @@ export const recommendations: Recommendation[] = [
     source: "LinkedIn",
     date: "Aug 29, 2025",
     image: "assets/recommendations/mohamed-amine-guitouni/avatar.webp",
-    profileUrl: linkedInRecommendationsUrl,
-  },
-  {
-    name: "Bedis Ben Said",
-    role: "Big Data Engineer",
-    quote:
-      "I had the pleasure of collaborating with Aziz on several projects, where I had the opportunity to appreciate his strong technical skills, dedication, and problem-solving mindset. Aziz consistently demonstrates a great ability to analyze challenges, learn quickly, and find effective solutions. He brings creativity, professionalism, and a positive attitude to every collaboration. Beyond his technical abilities, Aziz is a reliable and proactive teammate who communicates clearly and contributes valuable ideas during discussions and project development. His commitment and willingness to improve make him a great professional to work with. I highly recommend Aziz to anyone looking for a skilled, motivated, and dependable collaborator. I look forward to seeing his future achievements and hopefully working together again.",
-    source: "LinkedIn",
-    image: "assets/recommendations/bedis-bensaid/avatar.webp",
     profileUrl: linkedInRecommendationsUrl,
   },
 ];

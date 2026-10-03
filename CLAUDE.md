@@ -79,10 +79,13 @@ content, edit this file, not the components. Key exports:
 - `navItems` — header navigation (Header imports it).
 - `techItems` — the flat tech list in the Skills marquee (devicon CDN logos,
   per-item `accent` colour).
-- `projects: Project[]` — 16 projects, newest first. All have a 16:10 WebP
+- `projects: Project[]` — 17 projects, newest first. All have a 16:10 WebP
   `image`. `featured: true` ones surface on the home page (**only the first 4
   featured** are shown). Optional `video` — see "Project videos" below.
-- `certificates` (27), `recommendations` (6), `socialLinks`.
+- `certificates` (29), `recommendations` (6), `socialLinks`. A certificate's
+  `file` is what the card links to; when that's a PDF, `image` supplies the card
+  preview (e.g. the 20 Anthropic Academy certificates are ONE entry: a 5×4
+  collage image linking to the combined PDF — Aziz wants them kept as one).
 - `cv` — a single `LinkItem`. The one PDF contains both the English and the
   French CV, so there is one download everywhere (Header, Hero, Contact).
 - `course` — the Udemy course shown in the `Course` section.
@@ -137,8 +140,7 @@ poster and the clip fades in once it is actually playing; nothing is fetched
 until the first hover (`preload="none"`, sources attached on demand). Hover
 playback is deliberately **not** gated on `prefers-reduced-motion` — it only
 starts because the visitor pointed at the card, and Aziz's own Windows has
-animations turned off (which browsers report as reduce-motion). Touch devices
-get a "Video inside" badge instead. In the detail dialog, a project with a
+animations turned off (which browsers report as reduce-motion). In the detail dialog, a project with a
 video gets `MediaGallery`: two pages (Image, then Video) on a sliding track
 with arrows + Image/Video tabs + ←/→ keys; the video plays (with sound) when
 paged to and pauses when paged away.
@@ -182,10 +184,10 @@ card, which stays PNG because some link-preview crawlers don't read WebP).
 - `cv/cv guenni mohamed aziz.pdf` — CV, English + French in one file
 - `certificates/<slug>.webp` (full, ≤1800px) + `certificates/thumbs/<slug>.webp`
   (720px, used by the marquee)
-- `recommendations/<person>/avatar.webp` (192px square). `bedis-bensaid/` also
-  holds two unused ESAT logos.
+- `recommendations/<person>/avatar.webp` (192px square).
 - `projects/<slug>/<slug>-hero.webp` — 16:10 thumbnails, plus
-  `rehearsal-preview.{webm,mp4}`
+  `<slug>-preview.{webm,mp4}` for every project (made with /brag; sources
+  in each project repo's `brag-output/`)
 - `course/sftp-course.webp`, `og/og-card.png`
 
 To add an image: drop the PNG/JPG into the right folder, run
@@ -202,8 +204,7 @@ Git-ignored local staging folders (never shipped): `_intake/`, `thumbnails/`.
   `%SITE_URL%` in `index.html` (OG/Twitter tags). To move the site, change
   **only** `homepage`.
 - Responsive CSS breakpoints: 1060px, 820px (mobile nav, stacked layouts),
-  560px. `prefers-reduced-motion` is respected; `(hover: none)` swaps the
-  archive video badge text.
+  560px. `prefers-reduced-motion` is respected.
 - Several source files use CRLF line endings and some use LF — preserve each
   file's own.
 - Design language: light "paper" theme, teal (`--teal #0699a8`) + warm yellow

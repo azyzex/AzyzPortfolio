@@ -3,6 +3,8 @@
 Personal portfolio built with React, Vite, TypeScript and framer-motion, styled
 with hand-written CSS. Live at <https://azyzex.github.io/AzyzPortfolio/>.
 
+![Portfolio preview](public/assets/og/og-card.png)
+
 ## Run locally
 
 ```bash
