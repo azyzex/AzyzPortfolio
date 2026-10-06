@@ -50,6 +50,9 @@ body {
      rgba(17, 25, 31, 0.035) and 1px. */
   --grid-line: rgba(17, 25, 31, 0.06);
   --grid-width: 2px;
+  /* Own stacking context, so the grid layer (z-index: -1) paints above this
+     background instead of disappearing behind it. */
+  isolation: isolate;
   overflow-x: hidden;
   min-width: 320px;
   margin: 0;
@@ -57,10 +60,21 @@ body {
   background:
     radial-gradient(circle at 14% 8%, rgba(6, 153, 168, 0.1), transparent 24rem),
     radial-gradient(circle at 85% 4%, rgba(243, 189, 85, 0.17), transparent 18rem),
-    linear-gradient(var(--grid-line) var(--grid-width), transparent var(--grid-width)),
-    linear-gradient(90deg, var(--grid-line) var(--grid-width), transparent var(--grid-width)),
     #ffffff;
-  background-size: auto, auto, 56px 56px, 56px 56px, auto;
+}
+
+/* The grid is pinned to the screen: the content scrolls over it while the
+   grid itself never moves. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--grid-line) var(--grid-width), transparent var(--grid-width)),
+    linear-gradient(90deg, var(--grid-line) var(--grid-width), transparent var(--grid-width));
+  background-size: 56px 56px;
 }
 
 a {
@@ -477,6 +491,9 @@ img {
 }
 
 .work-media {
+  /* A link to the project in the archive; the hover clip sits over the image. */
+  position: relative;
+  display: block;
   overflow: hidden;
   min-height: 380px;
   background: var(--paper-blue);
@@ -515,6 +532,15 @@ img {
   color: var(--faint);
   font-size: 0.72rem;
   white-space: normal;
+}
+
+.work-copy h3 a {
+  transition: color 180ms ease;
+}
+
+.work-copy h3 a:hover,
+.work-copy h3 a:focus-visible {
+  color: var(--teal-dark);
 }
 
 .work-copy {

@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
  *   #about       -> an anchor    (no slash, browser handles it as before)
  *
  * So `#projects` (the featured section on the home page) and `#/projects` (the
- * full archive) never collide. Anything that isn't a known route falls back to
+ * full archive) never collide. `#/projects/<slug>` is the archive with that
+ * project's dialog already open. Anything that isn't a known route falls back to
  * home, so a stale or hand-typed hash can't render a blank page.
  */
 export type AppRoute = "home" | "projects";
@@ -20,6 +21,17 @@ export const routes = {
   home: "#/",
   projects: "#/projects",
 } as const;
+
+/** Archive link that opens straight onto one project's dialog. */
+export function projectHref(slug: string): string {
+  return `${routes.projects}/${slug}`;
+}
+
+/** The project slug in a `#/projects/<slug>` hash, or null. */
+export function readProjectSlug(hash: string = window.location.hash): string | null {
+  const match = /^#\/projects\/([\w-]+)/.exec(hash);
+  return match ? match[1] : null;
+}
 
 export function readRoute(hash: string = window.location.hash): AppRoute {
   return hash.startsWith("#/projects") ? "projects" : "home";

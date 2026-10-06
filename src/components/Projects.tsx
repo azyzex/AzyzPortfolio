@@ -1,9 +1,11 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { projects, socialLinks, type LinkItem, type Project } from "../data/portfolio";
 import { assetPath } from "../utils/assets";
-import { routes } from "../utils/router";
+import { projectHref, routes } from "../utils/router";
 import { fadeUp, softScale, spring, staggerContainer, viewportOnce } from "../utils/motion";
+import { CardVideo } from "./CardVideo";
 import { SectionHeader } from "./SectionHeader";
 
 function ProjectLink({ link }: { link: LinkItem }) {
@@ -28,13 +30,26 @@ function ProjectLink({ link }: { link: LinkItem }) {
 
 function WorkPiece({ project, index }: { project: Project; index: number }) {
   const Icon = project.icon;
+  // Same hover preview as the archive cards (and, like there, not gated on
+  // reduced motion: it only plays because the visitor pointed at it).
+  const [hovered, setHovered] = useState(false);
 
   return (
     <motion.article
       className={`work-piece work-piece--${index % 2 ? "reverse" : "normal"}`}
       variants={staggerContainer}
     >
-      <motion.div className="work-media" variants={softScale} whileHover={{ y: -8, rotate: index % 2 ? -0.6 : 0.6 }}>
+      <motion.a
+        className="work-media"
+        href={projectHref(project.slug)}
+        aria-label={`${project.title} — open in the projects page`}
+        variants={softScale}
+        whileHover={{ y: -8, rotate: index % 2 ? -0.6 : 0.6 }}
+        onPointerEnter={(event) => event.pointerType === "mouse" && setHovered(true)}
+        onPointerLeave={() => setHovered(false)}
+        onFocus={() => setHovered(true)}
+        onBlur={() => setHovered(false)}
+      >
         {project.image ? (
           <img
             src={assetPath(project.image)}
@@ -50,11 +65,14 @@ function WorkPiece({ project, index }: { project: Project; index: number }) {
             <code>{project.assetHint}</code>
           </div>
         )}
-      </motion.div>
+        {project.video ? <CardVideo src={project.video} active={hovered} /> : null}
+      </motion.a>
 
       <motion.div className="work-copy" variants={fadeUp}>
         <p className="work-category">{project.category}</p>
-        <h3>{project.title}</h3>
+        <h3>
+          <a href={projectHref(project.slug)}>{project.title}</a>
+        </h3>
         <p>{project.summary}</p>
         <div className="skill-tags skill-tags--compact" aria-label={`${project.title} technologies`}>
           {project.tech.slice(0, 5).map((tech) => (

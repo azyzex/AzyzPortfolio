@@ -52,6 +52,8 @@ Entry: `index.html` -> `src/main.tsx` -> `src/App.tsx`.
 `App.tsx` switches between two views with a tiny hash router
 (`src/utils/router.ts`): `#/projects` is a route (leading slash), anything else
 (`#about`, `#contact`…) is a normal in-page anchor on the home view.
+`#/projects/<slug>` (built with `projectHref(slug)`) is the archive with that
+project's dialog already open.
 
 ```
 <Header />
@@ -81,7 +83,8 @@ content, edit this file, not the components. Key exports:
   per-item `accent` colour).
 - `projects: Project[]` — 17 projects, newest first. All have a 16:10 WebP
   `image`. `featured: true` ones surface on the home page (**only the first 4
-  featured** are shown). Optional `video` — see "Project videos" below.
+  featured** are shown, in array order). Aziz chose them on 2026-10-04:
+  Rehearsal, The Roof, Printed Feeling, TunIA. Optional `video` — see "Project videos" below.
 - `certificates` (29), `recommendations` (6), `socialLinks`. A certificate's
   `file` is what the card links to; when that's a PDF, `image` supplies the card
   preview (e.g. the 20 Anthropic Academy certificates are ONE entry: a 5×4
@@ -106,12 +109,15 @@ Types (`LinkItem`, `Project`, `TimelineItem`, `Certificate`, `Recommendation`,
 - `SkillsTimeline.tsx` — despite the name, renders only the 5-row tech marquee
   (`techItems`). The timeline it once had was removed.
 - `Projects.tsx` — first 4 featured projects as alternating large "work
-  pieces", then a "See all N projects" button to `#/projects`.
+  pieces", then a "See all N projects" button to `#/projects`. Each piece's
+  image (and title) links to `#/projects/<slug>` and plays the hover video.
 - `AllProjects.tsx` — the archive: a grid of every project as cards, each
   opening a two-note detail dialog (Escape/backdrop closes, body scroll locked,
   focus restored). The grid is flex-wrap + `justify-content: center`, so an
   incomplete last row is always centred; `--archive-cols` (3/2/1 at >1060 /
-  ≤1060 / ≤700px) sets the card width. Cards with a `video` play it on hover, and their dialog
+  ≤1060 / ≤700px) sets the card width. A `#/projects/<slug>` hash opens that
+  dialog on arrival and scrolls its card into view behind it; closing it
+  `replaceState`s back to `#/projects` and focuses the card. Cards with a `video` play it on hover, and their dialog
   pages between image and video (see below).
 - `Proof.tsx` — two infinite marquees: certificates and recommendations.
   Durations are computed from item count × per-card travel constants
@@ -128,6 +134,9 @@ Types (`LinkItem`, `Project`, `TimelineItem`, `Certificate`, `Recommendation`,
   POSTs to `VITE_FORMSPREE_ENDPOINT`; unset, it falls back to `mailto:`.
 - `Course.tsx` — sits between Projects and Proof: tilted, taped course cover + copy +
   topic chips + "Check out the course" button, from `course` in portfolio.ts.
+- `CardVideo.tsx` — the muted hover clip (`CardVideo`) and `VideoSources`
+  (WebM then MP4), shared by the archive cards, the home work pieces and the
+  dialog's gallery.
 - `Footer.tsx`, `SectionHeader.tsx` — small presentational helpers.
 
 ### Project videos (hover-to-play)
@@ -169,7 +178,8 @@ ffmpeg -i in.mp4 -vf scale=1280:-2 -c:v libvpx-vp9 -b:v 0 -crf 36 -row-mt 1 \
   `mailto:`/`tel:` pass through. Leading slashes are stripped.
 - `motion.ts` — shared framer-motion variants: `spring`, `fadeUp`, `softScale`,
   `staggerContainer`, `viewportOnce`. Reuse these instead of inlining.
-- `router.ts` — the two-view hash router and post-navigation scroll fix.
+- `router.ts` — the two-view hash router, `projectHref` / `readProjectSlug`
+  for project deep links, and the post-navigation scroll fix.
 
 Note: framer writes an inline `transform` on anything it animates, which
 overrides a CSS `transform: rotate(...)`. For a tilted motion element, put the
@@ -207,6 +217,10 @@ Git-ignored local staging folders (never shipped): `_intake/`, `thumbnails/`.
   560px. `prefers-reduced-motion` is respected.
 - Several source files use CRLF line endings and some use LF — preserve each
   file's own.
+- The background grid is a fixed `body::before` layer: it stays put while the
+  content scrolls over it. `body` has `isolation: isolate` so that z-index -1
+  layer paints above body's own background (`:root` is white, so body's
+  background does not propagate to the canvas).
 - Design language: light "paper" theme, teal (`--teal #0699a8`) + warm yellow
   accents, serif (Georgia) italic flourishes via `--serif`, monospace accents
   via `--mono`, dotted-grid background, tactile decoration (tilted cards,

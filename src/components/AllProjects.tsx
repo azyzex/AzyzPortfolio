@@ -12,6 +12,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { projects, type Project } from "../data/portfolio";
 import { assetPath } from "../utils/assets";
 import { fadeUp, softScale, spring, staggerContainer } from "../utils/motion";
+import { readProjectSlug, routes } from "../utils/router";
+import { CardVideo, VideoSources } from "./CardVideo";
 
 function ProjectMedia({ project, large }: { project: Project; large?: boolean }) {
   const Icon = project.icon;
@@ -35,78 +37,6 @@ function ProjectMedia({ project, large }: { project: Project; large?: boolean })
   );
 }
 
-// WebM first: some systems (Windows "N" editions, Electron-based browsers)
-// cannot decode H.264 at all. The MP4 covers older Safari.
-function VideoSources({ base }: { base: string }) {
-  return (
-    <>
-      <source src={assetPath(`${base}.webm`)} type="video/webm" />
-      <source src={assetPath(`${base}.mp4`)} type="video/mp4" />
-    </>
-  );
-}
-
-/**
- * The card's clip: the thumbnail stays underneath as the poster, and the video
- * fades in over it once it is actually playing, so a slow network shows the
- * still rather than a black box. Nothing is downloaded until the first hover —
- * the grid would otherwise fetch every clip on page load.
- */
-function CardVideo({ src, active }: { src: string; active: boolean }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [armed, setArmed] = useState(false);
-  const [playing, setPlaying] = useState(false);
-
-  useEffect(() => {
-    if (active) {
-      setArmed(true);
-    }
-  }, [active]);
-
-  // <source> children added after mount are ignored until load() is called.
-  useEffect(() => {
-    if (armed) {
-      videoRef.current?.load();
-    }
-  }, [armed]);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || !armed) {
-      return;
-    }
-    if (active) {
-      // play() rejects if the pointer leaves before it starts; that's fine.
-      video.play().catch(() => undefined);
-      return;
-    }
-    // Fade out on the frame it was showing, and only rewind once it's
-    // invisible — rewinding first would visibly jump mid-fade.
-    video.pause();
-    setPlaying(false);
-    const rewind = window.setTimeout(() => {
-      video.currentTime = 0;
-    }, 520);
-    return () => window.clearTimeout(rewind);
-  }, [active, armed]);
-
-  return (
-    <video
-      ref={videoRef}
-      className={`archive-card__video${playing ? " is-playing" : ""}`}
-      muted
-      loop
-      playsInline
-      preload="none"
-      aria-hidden="true"
-      tabIndex={-1}
-      onPlaying={() => setPlaying(true)}
-    >
-      {armed ? <VideoSources base={src} /> : null}
-    </video>
-  );
-}
-
 function ArchiveCard({ project, onOpen }: { project: Project; onOpen: () => void }) {
   const [hovered, setHovered] = useState(false);
   // Deliberately NOT gated on prefers-reduced-motion: playback only ever
@@ -116,6 +46,7 @@ function ArchiveCard({ project, onOpen }: { project: Project; onOpen: () => void
     <motion.button
       type="button"
       className="archive-card"
+      data-slug={project.slug}
       variants={fadeUp}
       whileHover={{ y: -7 }}
       whileTap={{ scale: 0.99 }}
@@ -412,8 +343,30 @@ function ProjectDialog({ project, onClose }: { project: Project; onClose: () => 
 }
 
 export function AllProjects() {
-  const [openSlug, setOpenSlug] = useState<string | null>(null);
+  // A `#/projects/<slug>` link (the home page's featured work) arrives with
+  // that project's dialog already open.
+  const [openSlug, setOpenSlug] = useState<string | null>(() => readProjectSlug());
   const active = projects.find((project) => project.slug === openSlug) ?? null;
+
+  useEffect(() => {
+    const handleHashChange = () => setOpenSlug(readProjectSlug());
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  // Put the linked card in view behind its dialog, so closing it leaves you
+  // looking at the project you came for. A frame later, because the route
+  // change scrolls to the top after this view mounts.
+  useEffect(() => {
+    const slug = readProjectSlug();
+    if (!slug) {
+      return;
+    }
+    const frame = window.requestAnimationFrame(() => {
+      document.querySelector(`[data-slug="${slug}"]`)?.scrollIntoView({ block: "center" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
 
   // The dialog stays mounted while its exit animation plays, so silence any
   // video the instant it is dismissed rather than when it finally unmounts.
@@ -422,6 +375,14 @@ export function AllProjects() {
     document.querySelectorAll<HTMLVideoElement>(".project-modal-backdrop video").forEach((video) => {
       video.pause();
     });
+    const linked = readProjectSlug();
+    if (linked) {
+      // Drop the slug without a hashchange, so a reload shows the archive
+      // rather than reopening the dialog. Focus the card it came from, since
+      // the link that opened it lived on the home page and is gone.
+      window.history.replaceState(null, "", routes.projects);
+      document.querySelector<HTMLElement>(`[data-slug="${linked}"]`)?.focus({ preventScroll: true });
+    }
     setOpenSlug(null);
   }, []);
 
