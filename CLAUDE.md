@@ -81,7 +81,7 @@ content, edit this file, not the components. Key exports:
 - `navItems` — header navigation (Header imports it).
 - `techItems` — the flat tech list in the Skills marquee (devicon CDN logos,
   per-item `accent` colour).
-- `projects: Project[]` — 17 projects, newest first. All have a 16:10 WebP
+- `projects: Project[]` — 18 projects, newest first. All have a 16:10 WebP
   `image`. `featured: true` ones surface on the home page (**only the first 4
   featured** are shown, in array order). Aziz chose them on 2026-10-04:
   Rehearsal, The Roof, Printed Feeling, TunIA. Optional `video` — see "Project videos" below.

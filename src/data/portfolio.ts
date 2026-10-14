@@ -4,6 +4,7 @@ import {
   Bot,
   BriefcaseBusiness,
   CalendarDays,
+  ChartColumn,
   Code2,
   Database,
   DatabaseZap,
@@ -369,6 +370,28 @@ export const techItems: TechItem[] = [
 ];
 
 export const projects: Project[] = [
+  {
+    slug: "tunisia-data",
+    title: "Tunisia Data",
+    date: "Oct 2026",
+    category: "AI tooling · MCP connector",
+    summary:
+      "A free MCP connector that lets Claude answer with Tunisia's official statistics and open data — with the source and the year every time.",
+    details:
+      "Ask Claude about population, prices, jobs or health in any of the 24 governorates, and it answers with the figures published by the Institut National de la Statistique (~7,000 indicators, 78 datasets including the 2014 census and population projections) and the ~2,900 datasets on data.gov.tn. Eleven read-only tools search indicators in French or English, return time series with gaps kept as gaps, rank governorates, build governorate profiles with per-capita ratios, and preview open-data files. Regions resolve from French, English or Arabic names. Every answer carries its period and source, old data and projections are flagged, and known errors in the official metadata are corrected and labelled. It runs on Cloudflare Workers' free tier, read-only, with no account needed, and its landing page shows a live map of doctors per inhabitant by governorate.",
+    role:
+      "Designed and built it alone: reverse-engineered the undocumented INS XML API from its web client, crawled all 7,034 indicators to index which ones actually publish data and at which level, kept every request under the free plan's 10 ms CPU budget with a single-pass XML scanner (53 ms to 9 ms), added KV caching with a stale fallback for an unreliable upstream, and shipped it with 62 tests, an end-to-end MCP smoke test, CI and a weekly data refresh.",
+    tech: ["TypeScript", "Model Context Protocol", "Cloudflare Workers", "Cloudflare KV", "Vitest", "GitHub Actions"],
+    links: [
+      { label: "Live", href: "https://tunisia-data-mcp.azizguenni0.workers.dev", status: "available" },
+      { label: "GitHub", href: "https://github.com/azyzex/tunisia-data-mcp", status: "available" },
+      { label: "LinkedIn", href: "https://lnkd.in/p/eKbiGctF", status: "available" },
+    ],
+    image: "assets/projects/tunisia-data/tunisia-data-hero.webp",
+    video: "assets/projects/tunisia-data/tunisia-data-preview",
+    icon: ChartColumn,
+    assetHint: "public/assets/projects/tunisia-data/",
+  },
   {
     slug: "rehearsal",
     title: "Rehearsal",
