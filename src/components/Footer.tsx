@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <p>
-        © {new Date().getFullYear()} {profile.name}. Built with care.
+        © {new Date().getFullYear()} {profile.name}.
       </p>
       <div className="footer-links">
         <a href={assetPath("privacy.html")}>Privacy</a>
