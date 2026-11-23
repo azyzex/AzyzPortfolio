@@ -384,6 +384,43 @@ export const techItems: TechItem[] = [
 
 export const projects: Project[] = [
   {
+    slug: "ha-storage-platform",
+    title: "HA Storage Platform",
+    date: "Nov 2026",
+    category: "Infrastructure · DevSecOps",
+    summary:
+      "A file platform that keeps 3 copies of every file and keeps serving them when a server dies, with every failure tested on each push.",
+    details:
+      "GlusterFS keeps every file on three nodes (replica 3, built with Ansible); a FastAPI and React app runs on Kubernetes (k3s) with PostgreSQL for metadata, behind Traefik, with NetworkPolicies, non-root read-only containers and secrets generated at deploy. Prometheus, Grafana and Loki show storage health and latency, with alerts routed through Alertmanager; a small Isolation Forest detector learns normal storage behaviour and explains which signal moved. Argo CD deploys the cluster from Git, Falco watches containers at runtime, Trivy and gitleaks gate every change, and restic backs up the volume and the database to S3-compatible storage. Measured by automated tests on a cloud runner: with a storage node stopped the file is still served in 0.06-0.12 s with the same checksum; the node-down alert fires in 36-48 s; a node slowed by 40 ms is flagged by the detector in about 45 s while the fixed 500 ms alert stays silent; 40 users for 2.5 minutes with a node killed mid-run gave 11,482 requests, 0.01 % failed, and the API scaled from 2 to 6 pods; a file deleted from all three copies is restored in 6 s; hand edits to the cluster are reverted by Argo CD in 2-4 s; a shell opened in a container is caught by Falco.",
+    role:
+      "Designed and built it alone with free tools only, tested on GitHub Actions and GitHub Codespaces: the storage layer and its Ansible playbook, the app, the Kubernetes manifests, the observability stack with a custom GlusterFS exporter, the anomaly detector, backups and a restore drill, GitOps and runtime security, and the chaos and load tests. The tests found real bugs I fixed, such as a restarted node whose storage process silently never came back (a stale PID file), which left the volume on 2 copies while it looked healthy. It is a lab on one machine, not a multi-server production system.",
+    tech: [
+      "GlusterFS",
+      "Ansible",
+      "Kubernetes (k3s)",
+      "Docker",
+      "FastAPI",
+      "React",
+      "PostgreSQL",
+      "Prometheus",
+      "Grafana",
+      "Loki",
+      "scikit-learn",
+      "Argo CD",
+      "Falco",
+      "Trivy",
+      "GitHub Actions",
+    ],
+    links: [
+      { label: "GitHub", href: "https://github.com/azyzex/ha-storage-platform", status: "available" },
+      { label: "LinkedIn", status: "coming-soon" },
+    ],
+    image: "assets/projects/ha-storage-platform/ha-storage-platform-hero.webp",
+    video: "assets/projects/ha-storage-platform/ha-storage-platform-preview",
+    icon: DatabaseZap,
+    assetHint: "public/assets/projects/ha-storage-platform/",
+  },
+  {
     slug: "fibertwin-ops",
     title: "FiberTwin-Ops",
     date: "Oct 2026 - Nov 2026",
